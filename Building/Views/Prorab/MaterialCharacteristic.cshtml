@@ -1,0 +1,82 @@
+﻿@*@using System.Text;
+@model IEnumerable<Building.Domain.Entity.MaterialCharacteristic>
+
+<h2 class="text-center">@Model.FirstOrDefault().Material.Name</h2> 
+</br>
+<form asp-action="CreateQuery" asp-controller="Prorab" enctype="multipart/form-data" method="post">
+                
+    <div class="row">
+        <div class="col-6">
+            <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Элемент</th>
+                                <th>Значение</th>
+                                <th>Ед.Измерения</th>
+                                 @if (Model.First().Charac.Additional != null)
+                                {
+                                    <th>Доп.Информация</th>
+                                }
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                               
+                            
+
+                    
+                            @foreach (var item in Model)
+                            {
+                                
+                        
+                                int count = 0;
+                                <input type="hidden" name="value[@item.Charac.CharacteristicId].Key"  />
+                                <input type="hidden" name="MaterialCharacId" value="@item.MaterialId"/>
+                                <tr>
+                                <td class="pt-4">@item.Charac.Name</td>
+                                <td class="pt-3"><input type="text" class="form-control text-center" name="value[@item.Charac.CharacteristicId]" /></td>
+                                <td class="pt-4">@item.Charac.Measure</td>
+                                @if (Model.First().Charac.Additional != null)
+                                {
+
+                                    <td class="pt-4">@item.Charac.Additional</td>
+                                }
+                                </tr>
+                                count++;
+                            }
+                            <tr>
+                                <td class ="pt-3">Срок</td>
+                        <td><input type="date" class="text-center pt-3" name="Deadline" /></td>
+                            </tr>
+                            <tr>
+                                <td class="pt-4">Количество</td>
+                                <td class="pt-3"><input type="text" class="form-control text-center" name="Count" /></td>
+                            </tr>
+
+                        </tbody>                    
+            </table>
+            <p>
+                <label>Добавить фото</label>
+                <input type="file" class="form-control" name="postedFiles" multiple  />
+            </p>
+            <label for="Comment">Комментарии</label>
+            <textarea class="form-control" id="Comment" name="Additioanal" rows="3"></textarea>
+            <br/>
+            <br/>
+            <p>
+
+                <button type="submit" class="btn  btn-outline-primary position-absolute bottom-0 start-50 translate-middle ">Создать Заявку</button>
+             </p>
+        </div>
+            <div class="col-6">
+                <p class="text-center">
+                @*<img src="@Model.FirstOrDefault().Material.Photo" width="400px" height="400px">
+
+                </p>
+            </div>
+
+         
+        
+    </div>
+</form>
+*@

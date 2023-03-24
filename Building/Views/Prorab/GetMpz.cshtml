@@ -1,0 +1,243 @@
+﻿@using Building.Domain.DTO;
+@using Building.Domain.Entity;
+@using Building.Domain.Enum;
+@model IEnumerable<QueryDetail>
+<style>
+    .block-vert-line2 {
+        border-right: 2px solid #4272eb;
+        padding-left: 10px;
+    }
+        input[type=date] {
+        width: 40%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        
+    }
+
+    #buttonDelete {
+        position: absolute;
+        top: 94px;
+        left: 200px;
+    }
+
+</style>
+<div>
+
+        
+   
+    <div class="row">
+     
+        <div class="col-2 text-center ">
+           
+          
+
+            &nbsp
+          
+            
+            
+            @*&nbsp*@
+            <button type="button" class="btn btn-outline-light">
+                @*update*@
+                <a asp-action="GetMpz" asp-controller="Prorab">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" color="blue" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
+                        <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
+                    </svg>
+                </a>
+            </button>
+        </div>
+        
+        <div class="col-10  ">
+            <form asp-action="GetMpz"  method="get">
+                <div class="row">
+                    
+                    <div class=" col-10 form-outline ">
+                        <input type="search" class="form-control form-control-lg" placeholder="Найти заявку" value="@ViewBag.Search" name="search"  aria-label="Найти" />
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-outline-primary border border-primary  my-2 my-sm-0" type="submit">Найти</button>
+                    </div>
+                    
+                </div>
+                
+            </form>
+        </div>
+       @* <div class="row">
+            <div class="col text-end">
+                <label>с</label>
+                &nbsp
+                <input type="date">
+            </div>
+            <div class="col">
+                <label>до </label>
+                &nbsp
+                <input type="date">
+            </div>
+        </div>*@
+    </div>
+    <hr/>
+    <h3 class="display-6 text-center">Материально-производственные запасы</h3>
+
+    <br />
+    <br/>
+    <form asp-action="DeleteQuery" method="post" id="Delete">
+    <div>
+            <button type="submit" class="btn btn-outline-light" id="buttonDelete">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" color="red" class="bi bi-trash3" viewBox="0 0 16 16">
+                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                </svg>
+            </button>
+        <table class="table" id="myTable">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col"><input type="checkbox" class="form-check-input" name="allcheck" id="selectAll"/></th>
+                        <th class="text-center" scope="col">
+                            <a class="text-black" asp-action="GetMpz" asp-route-sortOrder="@ViewBag.NameSort">
+                                Наименование материала
+                                @if (ViewBag.NameSort == SortState.NameDesc)
+                                {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z" />
+                                    </svg>
+                                }
+                                else
+                                {
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
+                                    </svg>
+                                }
+                            </a>
+                        </th>
+                        <th class="text-center" scope="col">
+                            Дата создания
+                        </th>
+                    <th class="text-center" scope="col">
+                            <a class="text-black" asp-action="GetMpz" asp-route-sortOrder="@ViewBag.DataSort">
+                                Дата доставки
+                                @if (ViewBag.DataSort == SortState.DataDesc)
+                                {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z" />
+                                    </svg>
+                                }
+                                else
+                                {
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
+                                    </svg>
+                                }
+                            </a>
+                    </th>
+                    <th class="text-center" scope="col">Состояние</th>
+                    <th class="text-center" scope="col">
+                            <a class="text-black" asp-action="GetMpz" asp-route-sortOrder="@ViewBag.SnabSort">
+                                Снабженец
+                                @if (ViewBag.SnabSort == SortState.SnabDesc)
+                                {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z" />
+                                    </svg>
+                                }
+                                else
+                                {
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
+                                    </svg>
+                                }
+                            </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                @foreach (var item in Model)                
+                {
+                    <tr class="text-center">                        
+
+                            <th class="text-center pt-5"><input type="checkbox"  class="form-check-input chkCheckBoxId" value="@item.QueryId" name="queryId" /></th>
+                        <th class="text-center pt-5">
+                                @Html.ActionLink($"{@item.Name}", "QueryDetails", "Prorab", new { id = item.QueryId }, new
+                            {
+                            @class = "compItem" ,
+                                @* Needed to link to the html of the modal*@
+                            data_target = "#modDialog",
+                                @* Tells the bootstrap javascript to do its thing*@
+                            data_toggle = "modal"
+                            })
+                            </th>
+                            <th class="text-center pt-5">@Convert.ToDateTime(item.CreateDate).ToShortDateString()</th>
+                        <th class="text-center pt-5">@Convert.ToDateTime(item.DeliveryDate).ToShortDateString()</th>
+
+                        <th class="text-center pt-4">                           
+                                
+                                    <label class="text-center">Подтверждено</label>
+                                    <div class="progress">
+                                        <div class="progress-bar   bg-success" style="width:100%"></div>
+                                    </div>
+                                
+                        </th>
+                        
+                       
+                        <th class="text-center pt-5">@item.Query.Snab.SecondName @item.Query.Snab.Name</th>
+                        
+                        
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    </form>
+        <div id="modDialog" class="modal" role="dialog">
+            <div id="dialogContent" class="modal-dialog modal-lg"></div>
+        </div>
+
+</div>
+@section Scripts{
+@*<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>*@
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".compItem").click(function (e) {
+
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                    
+
+                });
+            });
+        })
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("#selectAll").click(function(){
+                if($(this).is(":checked"))
+                    $('.chkCheckBoxId').prop('checked',true);
+                else
+                    $('.chkCheckBoxId').prop('checked',false)
+            });
+        });
+    </script>
+}

@@ -1,0 +1,193 @@
+﻿@*Director*@
+
+@using Building.Domain.Entity;
+
+@model IEnumerable<Query>
+
+
+<style>
+    #sogl {
+        position: relative;
+        top: 15px;
+        left: 0px;
+    }
+
+    #searchbutton {
+        position: relative;
+        top: 3px;
+        left: 0px;
+    }
+
+    #Take {
+        position: absolute;
+        top: 92px;
+        left: 310px;
+    }
+
+    #update {
+        position: relative;
+        top: 0px;
+        left: -5px;
+    }
+</style>
+<div class="row">
+
+    <div class="col-2">
+        &nbsp
+        <button type="button" class="btn btn-outline-light">
+            <a asp-action="Main" asp-controller="Director">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                </svg>
+            </a>
+        </button>
+        <button type="button" class="btn btn-outline-light" id="update">
+            @*update*@
+            <a asp-action="GetQuery" asp-controller="Director">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" color="blue" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
+                    <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z" />
+                </svg>
+            </a>
+        </button>
+    </div>
+
+    <div class="col-10">
+        <form asp-action="GetQuery" method="get">
+            <div class="row">
+
+                <div class=" col-10 form-outline ">
+                    <input type="search" class="form-control form-control-lg" placeholder="Найти заявку" value="@ViewBag.Search" name="search" aria-label="Найти" />
+                </div>
+                <div class="col">
+                    <button class="btn btn-outline-primary border border-primary" type="submit" id="searchbutton">Найти</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<hr />
+<br />
+
+<div>
+
+    @if (Model.FirstOrDefault() != null)
+    {
+        <table class="table" id="myTable">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col"><input type="checkbox" class="form-check-input" name="allcheck" id="selectAll" /></th>
+                    <th class="text-center" scope="col">Наименование материала</th>
+                    <th class="text-center" scope="col">Срок</th>
+                    <th class="text-center" scope="col">Состояние</th>
+                    <th class="text-center" scope="col">Прораб</th>
+                    <th class="text-center" scope="col">Статус</th>
+                    <th class="text-center" scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <form method="post">
+
+                    @foreach (var item in Model)
+                    {
+                    <tr class="text-center">
+                        <th class="text-center pt-5"><input type="checkbox" class="form-check-input chkCheckBoxId" value="@item.QueryId" name="queryId" /></th>
+                        <th class="text-center pt-5">
+                                @*@Html.ActionLink($"{@item.Material.Name}", "QueryDetails", "Prorab", new { id = item.QueryId }, new
+                    {
+                    @class = "compItem" ,
+                         Needed to link to the html of the modal
+                    data_target = "#modDialog",
+                        Tells the bootstrap javascript to do its thing
+                    data_toggle = "modal"
+                    })*@
+                        </th>
+                        <th class="text-center pt-5">@item.Deadline</th>
+
+                        <th class="text-center pt-4">
+
+                                @if (item.State == "Заявка создана")
+                                {
+                                <label>Завка создана</label>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width:5%"></div>
+                                </div>
+                                }
+                        </th>
+                        <th class="text-center pt-5">@item.Prorab.SecondName  @item.Prorab.Name </th>
+                            @if (item.Status == "Не согласовано")
+                            {
+                            <th class="text-center text-danger pt-5">Не согласовано</th>
+                            <th class="text-center pt-4"><button class="btn btn-outline-info border border-info" asp-action="PointAgreement" asp-controller="Director" asp-route-id="@item.QueryId" id="sogl">Согласовать</button></th>
+                            }
+                            @if (item.Status == "На согласовании")
+                            {
+                            <th class="text-center text-info pt-5">На согласовании</th>
+                            <th class="text-center pt-4"><button class="btn btn-outline-info border border-info" asp-action="PointAgreement" asp-controller="Director" asp-route-id="@item.QueryId" id="sogl">Согласовать</button></th>
+                            }
+                            @if (item.Status == "Согласовано")
+                            {
+                            <th class="text-center text-success pt-5">Согласовано</th>
+                            }
+
+
+                    </tr>
+                    }
+                </form>
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <h3 class="text-center">Нет новых заявок</h3>
+    }
+
+</div>
+<div id="modDialog" class="modal" role="dialog">
+    <div id="dialogContent" class="modal-dialog modal-lg"></div>
+</div>
+
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".compItem").click(function (e) {
+
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+
+
+                });
+            });
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#selectAll").click(function () {
+                if ($(this).is(":checked"))
+                    $('.chkCheckBoxId').prop('checked', true);
+                else
+                    $('.chkCheckBoxId').prop('checked', false)
+            });
+        });
+    </script>
+}

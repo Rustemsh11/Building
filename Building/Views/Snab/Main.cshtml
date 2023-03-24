@@ -1,0 +1,40 @@
+﻿@using Building.Domain.Entity;
+@using System.Security.Claims;
+
+@model IEnumerable<BuildingSite>
+
+<h3 class="display-6 text-center">Выбрать объект</h3>
+<hr class="border border-primary border-3 opacity-75">
+<br/>
+<br/>
+<div  class="row">
+        
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <form>
+
+                <div class="border border-primary border-3">
+                    <p class="pt-3 text-center">
+                        <img src="@item.Photo" width="300px" height="200px" class="border border-primary border-2" />
+                    </p>
+                    <h3 class="text-center pt-3">
+                        <strong>@item.Name</strong>
+                    </h3>
+                    <p class="text-center">
+                        @item.Address
+                    </p>
+                    <p class="text-center pt-3">
+                        <input type="submit" class="btn btn-outline-primary border border-primary" value="Посмотреть заявки" asp-action="GetQuery" asp-controller="Snab" asp-route-id="@item.BuildingId"  />
+                    </p>
+                </div>
+            </form>
+
+
+
+        </div>
+       
+
+    }
+        
+</div>

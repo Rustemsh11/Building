@@ -1,0 +1,161 @@
+﻿@model IEnumerable<Building.Domain.Entity.QueryDetail>
+
+    <style>
+        #selectButton{
+            position:relative;
+            padding-top:10px
+        }
+    </style>
+
+<h2 class="display-5 text-center">Детали заявки</h2>
+
+<hr class="border border-primary border-3 opacity-75">
+
+<br />
+
+<form method="post">
+
+    @*<button type="submit" class="btn btn-outline-warning border border-warning border-1" asp-action="StateDelivery" asp-controller="Snab" id="createDoc">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+            <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
+            <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+        </svg>@Html.ActionLink($"Создать документ для запроса", "CreateDoc", "Snab", new
+        {
+        @class = "compItem" ,
+            @* Needed to link to the html of the modal
+        data_target = "#modDialog",
+            @* Tells the bootstrap javascript to do its thing
+        data_toggle = "modal"
+        }) 
+    </button>*@
+    &nbsp;
+    <button type="submit" class="btn btn-outline-info border border-info border-1" asp-action="StateFindedSuplyer" asp-controller="Snab" id="FindSuplyer">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-file-earmark-check" viewBox="0 0 16 16">
+            <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+        </svg> Найден поставщик
+    </button>
+    &nbsp;
+    <button type="submit" class="btn btn-outline-danger border border-danger border-1" asp-action="StateDelivery" asp-controller="Snab" id="deliver">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+            <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+        </svg> Доставляется
+    </button>
+    &nbsp;
+    <button type="submit" class="btn btn-outline-success border border-success border-1" asp-action="StateDelivered" asp-controller="Snab" id="delivered">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+        </svg> Доставлено
+    </button>
+
+</form>
+
+    <br />
+    <br />
+
+<form method="get" >
+
+    
+    <table class="table" id="myTable">
+        <thead>
+            <tr>
+                <th class="text-center" scope="col"><input type="checkbox" class="form-check-input" name="allcheck" id="selectAll" /></th>
+                <th class="text-center" scope="col">Номенклатура</th>
+                <th class="text-center" scope="col">Количество</th>
+                <th class="text-center" scope="col">Ед.измерения</th>
+                <th class="text-center" scope="col">Дата доставки</th>
+                <th class="text-center" scope="col">Состояние</th>
+                <th class="text-center" scope="col">Подбор поставщика</th>
+                <th class="text-center" scope="col">Проверить на складе</th>
+                <th class="text-center" scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <th class="text-center pt-4"><input type="checkbox" class="form-check-input chkCheckBoxId" value="@item.ID" name="queryDetailId" /></th>
+                    <th class="text-center pt-4">@item.Name</th>
+                    <th class="text-center pt-4">@item.Count</th>
+                    <th class="text-center pt-4">@item.Measure</th>
+                    <th class="text-center pt-4">@item.Query.Deadline</th>
+                    <td class="pt-2 text-center">
+                        @if (item.State == "Заявка создана")
+                        {
+                            <label class="text-center">Заявка создана</label>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" style="width:5%"></div>
+                            </div>
+                        }
+                        @if (item.State == "Заявка принята")
+                        {
+                            <label class="text-center">Заявка принята</label>
+                            <div class="progress">
+                                <div class="progress-bar   bg-dark" style="width:10%"></div>
+                            </div>
+                        }
+                        @if (item.State == "Найден поставщик")
+                        {
+                            <label class="text-center">Найден поставщик</label>
+                            <div class="progress">
+                                <div class="progress-bar   bg-primary" style="width:25%"></div>
+                            </div>
+                        }
+                        @if (item.State == "Заявка доставляется")
+                        {
+                            <label class="text-center">Заявка доставляется</label>
+                            <div class="progress">
+                                <div class="progress-bar   bg-info" style="width:50%"></div>
+                            </div>
+                        }
+                        @if (item.State == "Заявка доставлена")
+                        {
+                            <label class="text-center">Заявка доставлена</label>
+                            <div class="progress">
+                                <div class="progress-bar   bg-warning" style="width:90%"></div>
+                            </div>
+                        }
+                        @if (item.State == "Подтверждено")
+                        {
+                            <label class="text-center">Подтвержден</label>
+                            <div class="progress">
+                                <div class="progress-bar   bg-success" style="width:100%"></div>
+                            </div>
+                        }
+                        @if (item.State == "Опровергнут")
+                        {
+                            <label class="text-center">Опровергнут</label>
+                            <div class="progress">
+                                <div class="progress-bar   bg-danger" style="width:100%"></div>
+                            </div>
+                        }
+                    </td>
+
+
+                    <th class="text-center pt-3"><a class="btn btn-primary" asp-action="FindSuplyer" asp-controller="Snab" asp-route-catalogName="@item.Material.Catalog.Name" asp-route-materialName="@item.Material.Name" asp-route-queryId="@item.QueryId">Подобрать</a></th>
+                    <th class="text-center pt-3"><input type="submit" class="btn btn-primary" value="Проверить"/></th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("#selectAll").click(function () {
+                if ($(this).is(":checked"))
+                    $('.chkCheckBoxId').prop('checked', true);
+                else
+                    $('.chkCheckBoxId').prop('checked', false)
+            });
+        });
+    </script>    
+
+}

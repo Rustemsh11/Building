@@ -1,0 +1,185 @@
+﻿@using Building.Domain.Entity;
+@using System.Security.Claims;
+@using Building.Domain.Enum;
+
+
+@model IEnumerable<QueryDetail>
+
+<style>
+
+
+    #searchbutton {
+        position: relative;
+        top: 3px;
+        left: 0px;
+    }
+
+</style>
+
+<div>
+
+    <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-10">
+            <form asp-action="GetSnabQueries" method="get">
+                <div class="row">
+
+                    <div class=" col-10 form-outline ">
+                        <input type="search" class="form-control form-control-lg" placeholder="Найти заявку" value="@ViewBag.Search" name="search" aria-label="Найти" />
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-outline-primary border border-primary" type="submit" id="searchbutton">Найти</button>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+    <hr />
+    <h3 class="display-6 text-center">Мои доставленные заказы</h3>
+
+    <br />
+    <br />
+    <form method="post">
+
+        
+        @if (Model.FirstOrDefault() != null)
+        {
+
+            <table class="table" id="myTable">
+                <thead>
+                    <tr>
+
+                        <th class="text-center" scope="col"><a class="text-black" asp-action="GetDeliveredOrder" asp-route-sortOrder="@ViewBag.NameSort">Наименование материала 
+                            @if (ViewBag.NameSort == SortState.NameDesc)
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            }
+                            else
+                            {
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
+                                </svg>
+                            }</a>
+                        </th>
+                        <th>Дата создания</th>
+                        <th class="text-center" scope="col"><a class ="text-black" asp-action="GetDeliveredOrder" asp-route-sortOrder="@ViewBag.DataSort">Дата доставки 
+                            @if (ViewBag.DataSort == SortState.DataDesc)
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            }
+                            else
+                            {
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z" />
+                                </svg>
+                            }</a>
+                        </th>
+                        <th class="text-center" scope="col">Состояние</th>
+                        <th class="text-center" scope="col">Объект</th>
+                        <th class="text-center" scope="col">Прораб</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            
+                            <th class="text-center pt-5">
+                               @item.Name
+                            </th>
+                            <th class="text-center pt-5">@item.CreateDate</th>
+                            <th class="text-center pt-5">@item.DeliveryDate</th>
+
+                            <th class="text-center pt-4">
+
+                                @if (item.State == "Заявка доставлена")
+                                {
+                                    <label class="text-center">Заявка доставлена</label>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" style="width:75%"></div>
+                                    </div>
+                                }
+                                @if (item.State == "Подтверждено")
+                                {
+                                    <label class="text-center">Заявка подтверждена</label>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width:100%"></div>
+                                    </div>
+                                }
+                                
+
+
+                            </th>
+                            <th class="text-center pt-5">@item.Query.Site.Name</th>
+                            <th class="text-center pt-5">@item.Query.Prorab.SecondName  @item.Query.Prorab.Name </th>
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h3 class="text-center">Нет доставленных заявок</h3>
+        }
+    </form>
+
+</div>
+<div id="modDialog" class="modal" role="dialog">
+    <div id="dialogContent" class="modal-dialog modal-lg"></div>
+</div>
+
+@section Scripts{
+    @*<script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".compItem").click(function (e) {
+
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+
+
+                });
+            });
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#selectAll").click(function () {
+                if ($(this).is(":checked"))
+                    $('.chkCheckBoxId').prop('checked', true);
+                else
+                    $('.chkCheckBoxId').prop('checked', false)
+            });
+        });
+    </script>
+}

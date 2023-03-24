@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Building.Helper.ParsingData>
+
+<style>
+    #star{
+        position: relative;
+        bottom:5px;
+    }
+    #name{
+        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+    }
+    #container{
+        background-color: #F5F7FA;
+        
+    }
+    #comment{
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        line-height: 22px;
+        color: #263238;
+    }
+    #price{
+        
+        font-size: 20px;
+        line-height: 26px;
+        font-weight: bold;
+    }
+    #backbutton{
+        position:relative;
+        top:30px;
+    }
+
+</style>
+<div class="row">
+    <div class="col-1">
+        <a  asp-action="GetQueryDetail" asp-controller="Snab" asp-route-id="@ViewBag.QueryId">
+
+            <svg xmlns="http://www.w3.org/2000/svg" id="backbutton" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+            </svg>
+        </a>
+    </div>
+    <div class="col">
+
+        <h2 class="display-5 text-center">Предложения из сервиса СтройПрайс</h2>
+    </div>
+</div>
+
+<hr class="border border-primary border-3 opacity-75">
+
+<br />
+@foreach (var item in Model)
+{
+
+
+    <div id="container" class="row shadow-lg p-3 mb-5  rounded">
+        <div class="col-2">            
+            <p><img class="border border-2 border-primary rounded" src="@item.Image" width="170px" height="170px" ></img></p>
+        </div>
+
+        <div class="col-8">
+            
+            <h3 id="name">@item.Name</h3>
+            
+            
+
+            <h3 class="text-primary">@item.CompanyName
+                <svg xmlns="http://www.w3.org/2000/svg" id="star" width="30" height="30" fill="#e3ae27" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>&nbsp;<label class="text-black">    @item.RatingCompany</label>
+            </h3>
+            <p class="hideText" id="comment">@item.Comment</p>
+         
+        </div>
+        
+        <div class="col-2">
+            <h3 id="price">@item.Price</h3>
+            <h5>
+                <svg xmlns="http://www.w3.org/2000/svg" id="comment" width="30" height="30" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+                    <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg> @item.Location
+            </h5>
+            <br/>
+            <input type="button" onclick="window.location.href = '@item.UrlToCompany';" class="btn btn-primary" value="Перейти к поставщику"></input>
+        </div>
+        <br/>
+        
+    </div>
+    <br/>
+
+    
+
+    
+}
+@section Scripts{
+
+
+
+}
+

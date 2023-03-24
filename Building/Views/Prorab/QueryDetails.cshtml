@@ -1,0 +1,122 @@
+﻿@using Building.Domain.Entity;
+@model IEnumerable<QueryDetail>
+
+<style>
+
+    #closeButton {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+       
+    }
+</style>
+
+<div class="modal-content bg-primary bg-opacity-75 text-white rounded">
+    <div class="modal-header border-0 row">
+        <div class="col-12">
+            <h4 class="text-center">@Model.First().Query.Name</h4>
+            <button type="button" class="btn-close btn-light" data-bs-dismiss="modal" area-hidden="true" aria-label="Close" id="closeButton"></button>
+        </div>
+
+    </div>
+    <div class="modal-body row modalbody">
+        
+
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class ="text-white"></thclass>
+                        <th class="text-white">Категория</th>
+                        <th class="text-white">Материал</th>
+                        <th class="text-white">Наименование</th>
+                        <th class="text-white">Количество</th>
+                        <th class="text-white">Примечание</th>
+                        <th class="text-white">Состояние</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                    @{
+                        int count = 1;
+                        @foreach (var item in Model)
+                        {
+                        
+                            <tr>
+                                <td class="pt-4 text-white">@count</td>
+                                <td class="pt-4 text-white">@item.Material.Catalog.Name</td>
+                                <td class="pt-4 text-white">@item.Material.Name</td>
+                                <td class="pt-4 text-white">@item.Name</td>
+                                <td class="pt-4 text-white">@item.Count  @item.Measure</td>                            
+                                <td class="pt-4 text-white">@item.Additional</td>
+                                <td class="pr-4 text-white">
+                                    @if (item.State == "Заявка создана")
+                                    {
+                                        <label class="text-center">Заявка создана</label>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" style="width:5%"></div>
+                                        </div>
+                                    }
+                                    @if (item.State == "Заявка принята")
+                                    {
+                                        <label class="text-center">Заявка принята</label>
+                                        <div class="progress">
+                                            <div class="progress-bar   bg-dark" style="width:10%"></div>
+                                        </div>
+                                    }
+                                    @if (item.State == "Найден поставщик")
+                                    {
+                                        <label class="text-center">Найден поставщик</label>
+                                        <div class="progress">
+                                            <div class="progress-bar   bg-primary" style="width:25%"></div>
+                                        </div>
+                                    }
+                                    @if (item.State == "Заявка доставляется")
+                                    {
+                                        <label class="text-center">Заявка доставляется</label>
+                                        <div class="progress">
+                                            <div class="progress-bar   bg-info" style="width:50%"></div>
+                                        </div>
+                                    }
+                                    @if (item.State == "Заявка доставлена")
+                                    {
+                                        <label class="text-center">Заявка доставлена</label>
+                                        <div class="progress">
+                                            <div class="progress-bar   bg-warning" style="width:90%"></div>
+                                        </div>
+                                    }
+                                    @if (item.State == "Подтверждено")
+                                    {
+                                        <label class="text-center">Подтвержден</label>
+                                        <div class="progress">
+                                            <div class="progress-bar   bg-success" style="width:100%"></div>
+                                        </div>
+                                    }
+                                    @if (item.State == "Опровергнут")
+                                    {
+                                        <label class="text-center">Опровергнут</label>
+                                        <div class="progress">
+                                            <div class="progress-bar   bg-danger" style="width:100%"></div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                            count++;
+
+                        }
+                    }
+                                                            
+
+
+                </tbody>
+            </table>
+            </br>
+            <label class="text-white">Срок доставки: @Model.FirstOrDefault().Query.Deadline</label>
+        </div>
+
+
+        
+    </div>
+</div>

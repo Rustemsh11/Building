@@ -1,0 +1,36 @@
+﻿@model Building.Domain.Entity.BuildingSite
+
+
+<div class="container-fluid">
+
+    <h2 class="display-5 text-center">Объект</h2>
+    <hr class="border border-primary border-3 opacity-75">
+    <div class="border border-2 border-primary rounded-2">
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col">
+
+                <h2 class="text-black">
+                    Объект - <strong>@Model.Name</strong>
+                </h2>
+
+                <h2 class="display-7 text-black">
+                    Адрес - <strong>@Model.Address</strong>
+                </h2>
+
+                <h2 class="text-black">
+                    Срок сдачи - <strong>@Model.Deadline</strong>
+                </h2>
+            </div>
+            <div class="col">
+                <p>
+                    <img src="@Model.Photo" class="rounded mx-auto d-block pt-4 border border-1 border-primary" width="400px" height="300px" />
+                </p>
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+</div>

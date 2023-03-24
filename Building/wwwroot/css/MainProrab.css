@@ -1,0 +1,16 @@
+﻿body {
+}
+#popup {
+    top: -100%;
+    visibility: hidden;
+}
+
+#popup.active {
+    visibility: visible; /*показываем окно*/
+    top: 50%; /*окно выдвигается сверху*/
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+
+
+
