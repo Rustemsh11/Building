@@ -4,7 +4,7 @@ using Range = Microsoft.Office.Interop.Word.Range;
 
 namespace Building.Helper
 {
-    public  class WordDocument
+    public class WordDocument
     {
         public string SuplyerName { get; set; }
         public string SuplyerINN { get; set; }
@@ -18,6 +18,9 @@ namespace Building.Helper
         public string BuildingName { get; set; }
         public string BuildingAddress { get; set; }
         public string ResponseDate { get; set; }
+        public bool IsSendEmail { get; set; }
+        public string DocumentPath { get; private set; }
+
         public IEnumerable<QueryDetail> QueryDetails { get; set; }
 
         public void Create()
@@ -115,10 +118,9 @@ namespace Building.Helper
                 range5.Font.Bold = 0;
                 i++;
             }
-
-            document.SaveAs(@"C:\Users\агроном\Desktop\test.docx");
+            DocumentPath = $@"C:\Users\агроном\Desktop\Query\query_order.docx";
+            document.SaveAs(DocumentPath);            
             document.Close();
-
             application.Quit();
 
 

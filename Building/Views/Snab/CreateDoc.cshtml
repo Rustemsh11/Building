@@ -135,7 +135,13 @@
                     </div>
                     <br />
                     <div class="row">
-                        
+                        <div class="col">
+                            <label asp-for="ResponseDate">Email поставщика </label><br />
+                            <input type="text" name="Recipient" />
+                        </div>
+                        <div class="col text-start">
+                           <input name="selected" asp-for="@Model.IsSendEmail" />
+                        </div>
                     </div>
                     <br />
                     <table class="table" id="myTable">

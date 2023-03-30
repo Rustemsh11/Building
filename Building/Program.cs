@@ -5,7 +5,9 @@ using Building.DAL;
 using Building.DAL.Interfaces;
 using Building.DAL.Repositories;
 using Building.Domain.DTO;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Building.Helper;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +30,14 @@ builder.Services.AddScoped<IMaterialService, MaterialService>();
 builder.Services.AddScoped<IQueryDetailsService, QueryDetailsService>();
 builder.Services.AddScoped<IBuildingSiteService, BuildingSiteService>();
 builder.Services.AddScoped<ICatalogService, CatalogService>();
+
+
+builder.Services.AddTransient<Email>();
+builder.Services.Configure<FormOptions>(o => {
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
+});
 
 
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));

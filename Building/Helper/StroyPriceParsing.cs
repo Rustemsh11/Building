@@ -1,6 +1,7 @@
 ﻿using Leaf.xNet;
 using AngleSharp.Html.Parser;
 using AngleSharp.Html.Dom;
+using Building.Helper.Model;
 
 namespace Building.Helper
 {

@@ -3,6 +3,7 @@ using Building.BLL.Services.Interfaces;
 using Building.Domain.Entity;
 using Building.Domain.Enum;
 using Building.Helper;
+using Building.Helper.Model;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -18,13 +19,15 @@ namespace Building.Controllers
         private readonly IQueryService queryService;
         private readonly IEmployeeService employeeService;
         private readonly IQueryDetailsService queryDetailsService;
-        public Snab(IBuildingSiteService buildingSiteService, IQueryService queryService, IEmployeeService employeeService, IMapper mapper, IQueryDetailsService queryDetailsService)
+        private readonly Email _email;
+        public Snab(IBuildingSiteService buildingSiteService, IQueryService queryService, IEmployeeService employeeService, IMapper mapper, IQueryDetailsService queryDetailsService, Email email)
         {
             this.buildingSiteService = buildingSiteService;
             this.queryService = queryService;
             this.employeeService = employeeService;
             this.mapper = mapper;
             this.queryDetailsService = queryDetailsService;
+            _email = email;
         }
 
 
@@ -226,6 +229,10 @@ namespace Building.Controllers
 
             return View(docInfo);
         }
+        private async void CreateDocument(IFormCollection formCollection)
+        {
+            
+        }
         [HttpPost]
         public async Task<IActionResult> CreateDoc(IFormCollection formCollection)
         {
@@ -239,6 +246,7 @@ namespace Building.Controllers
             string inn = formCollection["SuplyerINN"];
             string kpp = formCollection["SuplyerKPP"];
             string responseDate = formCollection["ResponseDate"];
+            bool isSendEmail = bool.Parse(formCollection["selected"]);
 
             if (getid != null)
             {
@@ -246,7 +254,7 @@ namespace Building.Controllers
 
                 foreach (var id in ids)
                 {
-                    var queryDetail = await queryDetailsService.GetQueryDetailsList(int.Parse(id));                    
+                    var queryDetail = await queryDetailsService.GetQueryDetailsList(int.Parse(id));
                     queryDetails.Add(queryDetail.Data.First());
                 }
                 var buildingInfo = await buildingSiteService.GetBuildingInfo(queryDetails.First().Query.SiteId);
@@ -260,7 +268,32 @@ namespace Building.Controllers
                 doc.BuildingName = buildingInfo.Data.Name;
                 doc.BuildingAddress = buildingInfo.Data.Address;
                 doc.Create();
+
+
+                if (isSendEmail)
+                {
+                    EmailData emailData = new EmailData()
+                    {
+                        CompanyName = companyName,
+                        Recipient = formCollection["Recipient"],
+                        Attachment = doc.DocumentPath
+                    };
+                    _email.CreateEmail(emailData);
+                }
+                MemoryStream memory = new MemoryStream();
+                using(var stream = new FileStream(doc.DocumentPath, FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+                return File(memory, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "QueryOrder.docx");
             }
+            return RedirectToAction("CreateDoc");
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateDocAndSend(IFormCollection formCollection)
+        {
+            CreateDocument(formCollection);
             
             return RedirectToAction("CreateDoc");
         }

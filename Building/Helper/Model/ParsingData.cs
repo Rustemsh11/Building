@@ -1,4 +1,4 @@
-﻿namespace Building.Helper
+﻿namespace Building.Helper.Model
 {
     public class ParsingData
     {
