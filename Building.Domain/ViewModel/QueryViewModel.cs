@@ -13,6 +13,7 @@ namespace Building.Domain.ViewModel
         public int? Count { get; set; }
         public string? Additional { get; set; }
         public string? Deadline { get; set; }
+        public string? Site { get; set; }
 
     }
 }

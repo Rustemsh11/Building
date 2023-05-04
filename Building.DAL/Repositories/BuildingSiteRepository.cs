@@ -21,5 +21,10 @@ namespace Building.DAL.Repositories
         {
             return await buildingContext.BuildingSites.ToListAsync();
         }
+
+        public int GetIdByName(string siteName)
+        {
+            return buildingContext.BuildingSites.Where(c=>c.Name==siteName).Select(c => c.BuildingId).First();
+        }
     }
 }

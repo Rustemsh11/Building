@@ -6,5 +6,6 @@ namespace Building.DAL.Interfaces
     {
         Task<BuildingSite> Get(int? id);
         Task<IEnumerable<BuildingSite>> GetAll();
+        int GetIdByName(string siteName);
     }
 }

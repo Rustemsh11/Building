@@ -1,0 +1,387 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+@model List<Building.Domain.ViewModel.QueryViewModel>
+
+<style>
+    #backToMain {
+        position: relative;
+        top: 30px;
+    }
+
+    #title {
+        position: relative;
+        left: 300px;
+    }
+
+
+    #tblQuery{
+        position:absolute;
+        left:0px;
+    }
+
+
+    #tblQuery th {
+        text-align: center
+    }
+
+    #tblQuery td {
+        text-align: center
+    }
+
+    input[type=text] {
+        width: 100%;
+        padding: 4px 1px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+
+    input[type=number] {
+        width: 100%;
+        padding: 4px 1px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+
+    #select {
+        width: 100%;
+        padding: 4px 1px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+
+    input[type=date] {
+        width: 100%;
+        padding: 4px 1px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+
+    #materialList {
+        width: 100%;
+        padding: 4px 1px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+    #Site{
+        width: 100%;
+        padding: 4px 1px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+
+</style>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-1">
+            <a id="backToMain" asp-action="Main" asp-controller="Snab">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                </svg>
+            </a>
+        </div>
+        <div class="col">
+            <h1 id="title" class="display-5">Создать заявку</h1>
+        </div>
+        <hr class="border border-primary border-3 opacity-75">
+    </div>
+    </br>
+
+
+    <table id="tblQuery" class="table">
+
+        <thead>
+
+            <tr>
+                <th>Выберите категорию</th>
+                <th>Выберите материал</th>
+                <th>Номенклатура</th>
+                <th>Ед.измерения</th>
+                <th>Количество</th>
+                <th>Примечание</th>
+                <th>Дата доставки</th>
+                <th>Объект</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+            <tr>
+
+                <td class="text-end">
+                    <select id="select" asp-items="@ViewBag.Catalog" class="form-select" aria-label="Default select example">
+                        <option selected>Выберите категорию</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-select" id="materialList" aria-label="Default select example">
+                        <option selected>Выберите материал</option>
+                    </select>
+
+                </td>
+                <td>
+                    <input type="text" id="Name" />
+                </td>
+                <td>
+                    <input type="text" id="Measure" />
+                </td>
+                <td>
+                    <input type="number" id="Count" />
+                </td>
+                <td>
+                    <input type="text" id="Additional" />
+                </td>
+                <td>
+                    <input type="date" id="Deadline" />
+                </td>
+                <td>
+                    <select id="Site" asp-items="@ViewBag.Building" class="form-select" aria-label="Default select example">
+                        <option selected>Выберите объект</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="button" class="btn btn-primary" style="padding: 9px 20px; margin: 4px 0;" id="btnAdd" value="Add" />
+                </td>
+
+
+            </tr>
+        </tfoot>
+    </table>
+    <input type="button" id="btnSave" class="btn  btn-primary position-absolute bottom-0 start-50 translate-middle " value="Создать Заявку" />
+    @*    </form>*@
+    @*<div class="row">
+
+    <div class="col-1">
+    <a asp-action="Main" asp-controller="Prorab">
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+    </svg>
+    </a>
+    </div>
+
+
+
+    <div class=" col-10 form-outline">
+    <input type="text" id="search" class="form-control form-control-lg" name="materialName" placeholder="Найти материал" value="@ViewBag.Search" aria-label="Найти" />
+    </div>
+
+    <div class="col">
+    <button class="btn btn-outline-primary  my-2 my-sm-0 form-control" id="loadPartialView" type="submit">Найти</button>
+    </div>
+
+    </div>
+    </br>
+    <div id="part"></div>
+    *@
+
+
+
+
+
+</div>
+
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $("#select").change(function () {
+                $("#materialList").empty();
+                $.ajax({
+                    type: 'Get',
+                    url: "LoadMaterial",
+                    dataType: 'json',
+                    data: { id: $("#select").val() },
+
+                    success: function (states) {
+                        $("#materialList").append('<option value="' + - 1 + '">' + "Выберите материал" + '</option>');
+                        $.each(states, function (i, state) {
+                            $("#materialList").append('<option value="' + state.value + '">' + state.text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed ' + ex)
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#search").autocomplete({
+                source: "search"
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("body").on("click", "#btnAdd", function () {
+            //Reference the Name and Country TextBoxes.
+            var Catalog = $("#select option:selected")
+            var MaterialId = $("#materialList option:selected")
+            var Name = $("#Name");
+            var Measure = $("#Measure");
+            var Count = $("#Count");
+            var Additional = $("#Additional");
+            var Deadline = $("#Deadline");
+            var Site = $("#Site option:selected");
+
+            $("#pets option:selected").text()
+            //Get the reference of the Table's TBODY element.
+            var tBody = $("#tblQuery > TBODY")[0];
+
+            //Add Row.
+            var row = tBody.insertRow(-1);
+
+            //Add Material cell.
+            //var cell = $(row.insertCell(-1));
+            //cell.html(Catalog.val());
+
+            cell = $(row.insertCell(-1));
+            cell.html(Catalog.text());
+
+            //cell = $(row.insertCell(-1));
+            //cell.html(MaterialId.val());
+
+            cell = $(row.insertCell(-1));
+            cell.html(MaterialId.text());
+            //Add Name cell.
+            cell = $(row.insertCell(-1));
+            cell.html(Name.val());
+
+            //Add Measure cell.
+            cell = $(row.insertCell(-1));
+            cell.html(Measure.val());
+
+            //Add Count cell.
+            cell = $(row.insertCell(-1));
+            cell.html(Count.val());
+
+            //Add Addiional cell.
+            cell = $(row.insertCell(-1));
+            cell.html(Additional.val());
+
+            //Add Deadline cell.
+            cell = $(row.insertCell(-1));
+            cell.html(Deadline.val());
+            //Add Query cell.
+            cell = $(row.insertCell(-1));
+            cell.html(Site.text());
+
+
+
+            //Add Button cell.
+            cell = $(row.insertCell(-1));
+            var btnRemove = $("<input />");
+            btnRemove.attr("type", "button");
+            btnRemove.attr("onclick", "Remove(this);");
+            btnRemove.attr("class", "btn btn-danger");
+            btnRemove.val("Remove");
+            cell.append(btnRemove);
+
+            //Clear the TextBoxes
+            $("select").prop('selectedIndex', 0);
+            $("materialList").prop('selectedIndex', 0);
+
+            Name.val("");
+            Measure.val("");
+            Count.val("");
+            Additional.val("");
+            Deadline.val("");
+            $("Site").prop('selectedIndex', 0);
+
+        });
+
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(2).html();
+            if (confirm("Do you want to delete: " + name)) {
+                //Get the reference of the Table.
+                var table = $("#tblQuery")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+            }
+        };
+
+        $("body").on("click", "#btnSave", function () {
+            //Loop through the Table rows and build a JSON array.
+            var queries = new Array();
+            $("#tblQuery TBODY TR").each(function () {
+
+                var row = $(this);
+                var query = {};
+
+                query.CatalogName = $("TD", row).eq(0).html();
+                query.MaterialName = $("TD", row).eq(1).html();
+                query.Name = $("TD", row).eq(2).html();
+                query.Measure = $("TD", row).eq(3).html();
+                query.Count = $("TD", row).eq(4).html();
+                query.Additional = $("TD", row).eq(5).html();
+                query.Deadline = $("TD", row).eq(6).html();
+                query.Site = $("TD", row).eq(7).html();
+
+                queries.push(query);
+            });
+
+
+            $.post('@Url.Action("CreateQuery")', { queries: queries });
+            alert("Заявка создана!")
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            $("#loadPartialView").click(function () {
+
+                $.ajax({
+                    url: "MaterialCharacteristic",
+                    type: 'Get',
+                    data: { "materialName": $("#search").val() },
+                    success: function (response) {
+                        $("#part").html(response)
+                    }
+                });
+            });
+        });
+    </script>
+}

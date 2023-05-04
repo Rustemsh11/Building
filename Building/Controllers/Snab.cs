@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using Building.BLL.Services.Implementations;
 using Building.BLL.Services.Interfaces;
 using Building.Domain.Entity;
 using Building.Domain.Enum;
+using Building.Domain.ViewModel;
 using Building.Helper;
 using Building.Helper.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Security.Claims;
@@ -19,8 +22,9 @@ namespace Building.Controllers
         private readonly IQueryService queryService;
         private readonly IEmployeeService employeeService;
         private readonly IQueryDetailsService queryDetailsService;
+        private readonly IMaterialService materialService;
         private readonly Email _email;
-        public Snab(IBuildingSiteService buildingSiteService, IQueryService queryService, IEmployeeService employeeService, IMapper mapper, IQueryDetailsService queryDetailsService, Email email)
+        public Snab(IBuildingSiteService buildingSiteService, IQueryService queryService, IEmployeeService employeeService, IMapper mapper, IQueryDetailsService queryDetailsService, Email email, IMaterialService materialService)
         {
             this.buildingSiteService = buildingSiteService;
             this.queryService = queryService;
@@ -28,6 +32,7 @@ namespace Building.Controllers
             this.mapper = mapper;
             this.queryDetailsService = queryDetailsService;
             _email = email;
+            this.materialService = materialService;
         }
 
 
@@ -93,6 +98,64 @@ namespace Building.Controllers
 
             return RedirectToAction("GetQuery", new { id = TempData["id"] });
 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateOrder()
+        {
+            ViewBag.Catalog = new SelectList(materialService.GetCatalog().Data, "CatalogID", "Name");
+            var buildingList = await buildingSiteService.GetAll();
+            ViewBag.Building = new SelectList(buildingList.Data, "BuildingId", "Name");
+            var emptyList = new List<QueryViewModel>();
+
+            return View(emptyList);
+        }
+        [HttpGet]
+        public JsonResult LoadMaterial(int id)
+        {
+            var state = materialService.GetMaterials(id).Data;
+            return Json(new SelectList(state, "MaterialId", "Name"));
+        }
+        [HttpPost]
+        public async Task<JsonResult> CreateQuery(IEnumerable<QueryViewModel> queries)
+        {
+            if (queries.Count() != 0)
+            {
+                
+                var siteId = buildingSiteService.GetIdByName(queries.First().Site).Data;
+                Query query = new Query();
+                query.Name = string.Format("Моя заявка от {0}", DateTime.Now);                
+                query.SiteId = siteId;
+                query.State = "Заявка принята";
+                query.Status = "Не согласовано";
+                query.Deadline = queries.First().Deadline.ToString();
+                query.CreateDate = DateTime.Now.ToString();
+                query.SnabId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+                queryService.Create(query);
+                foreach (var item in queries)
+                {
+                    
+                    var material = await materialService.GetIdByName(item.MaterialName);
+                    QueryDetail queryDetail = new QueryDetail();
+                    queryDetail.QueryId = query.QueryId;
+                    queryDetail.MaterialId = material.Data.MaterialId;
+                    queryDetail.CatalogId = material.Data.IdCatalog;
+                    queryDetail.Name = item.Name;
+                    queryDetail.Count = item.Count;
+                    queryDetail.Measure = item.Measure;
+                    queryDetail.Additional = item.Additional;
+                    queryDetail.State = "Обработан";
+                    queryDetail.CreateDate = DateTime.Now.ToShortDateString();
+                    queryDetailsService.Create(queryDetail);
+
+                }
+
+                return Json("Заявка успешно создана");
+
+
+            }
+            return Json("Добавьте записи");
         }
 
 

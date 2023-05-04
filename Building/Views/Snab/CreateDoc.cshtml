@@ -65,6 +65,13 @@
         position: relative;
         left: 190px
     }
+    .input{
+        width: 20px;
+        height: 20px;
+        position:relative;
+        top:5px;
+        
+    }
 </style>
 
 <div class="container-fluid">
@@ -140,7 +147,10 @@
                             <input type="text" name="Recipient" />
                         </div>
                         <div class="col text-start">
-                           <input name="selected" asp-for="@Model.IsSendEmail" />
+                            <br />
+                            <br />
+                            <label asp-for="IsSendEmail">Отправить на почту</label>&nbsp;
+                           <input name="selected" class="input" asp-for="@Model.IsSendEmail" />
                         </div>
                     </div>
                     <br />

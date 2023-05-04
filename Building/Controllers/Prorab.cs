@@ -6,9 +6,7 @@ using Building.Domain.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Reflection.Metadata;
 using System.Security.Claims;
 
 
@@ -86,7 +84,7 @@ namespace Building.Controllers
         public async Task<IActionResult> Create()
         {
 
-           ViewBag.Catalog =  new SelectList(materialService.GetCatalog().Data,"CatalogID", "Name");
+            ViewBag.Catalog =  new SelectList(materialService.GetCatalog().Data,"CatalogID", "Name");
             
             var emptyList = new List<QueryViewModel>();    
 

@@ -120,6 +120,9 @@
                                             </li>
 
                                             <li class="nav-item">
+                                                <a class="nav-link active text-light" aria-current="page" asp-conroller="Snab" asp-action="CreateOrder">Создать заказ</a>
+                                            </li>
+                                            <li class="nav-item">
                                                 <a class="nav-link active text-light" aria-current="page" asp-conroller="Snab" asp-action="GetSnabQueries" asp-route-id="@User.Claims.FirstOrDefault(c=>c.Type==ClaimTypes.NameIdentifier).Value">Мои заказы</a>
                                             </li>
                                             <li class="nav-item">

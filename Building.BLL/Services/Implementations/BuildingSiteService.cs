@@ -86,5 +86,39 @@ namespace Building.BLL.Services.Implementations
                 };
             }
         }
+
+        public BaseResponse<int> GetIdByName(string siteName)
+        {
+            try
+            {
+                var buildingSite =  buildingSiteRepository.GetIdByName(siteName);
+                if (buildingSite != null)
+                {
+                    var response = new BaseResponse<int>()
+                    {
+                        Data = buildingSite,
+                        StatusCode = Domain.Enum.StatusCode.OK
+                    };
+                    return response;
+                }
+                else
+                {
+                    var response = new BaseResponse<int>()
+                    {
+                        Description = "Building sites not found"
+                    };
+                    return response;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<int>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.ServerError
+                };
+            }
+        }
     }
 }
