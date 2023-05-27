@@ -5,9 +5,11 @@ using Building.Domain;
 using Building.Domain.DTO;
 using Building.Domain.Entity;
 using Building.Domain.Response;
+using Building.Domain.ViewModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Security.Claims;
 
@@ -22,6 +24,28 @@ namespace Building.Controllers
             this.loginService = loginService;
             this.mapping = mapping;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddNewEmployee()
+        {
+
+            var names = await loginService.GetAllPositionName();
+            ViewBag.PositionNames = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(names.Data);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Registr(EmployeeViewModel employee)
+        {
+            await loginService.Registr(employee);
+            return RedirectToAction("AddNewEmployee");
+        }
+
+
+
+
+
+
         public IActionResult Index()
         {
             var auth = new LoginViewModel();

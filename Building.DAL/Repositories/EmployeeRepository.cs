@@ -18,7 +18,14 @@ namespace Building.DAL.Repositories
 
         public bool Create(Employee entity)
         {
-            throw new NotImplementedException();
+            if (entity != null)
+            {
+                buildingContext.Add(entity);
+                buildingContext.SaveChanges();
+                return true;
+
+            }
+            return false;
         }
 
         public bool Delete(int id)
@@ -42,9 +49,9 @@ namespace Building.DAL.Repositories
             return false;
         }
 
-        public async Task<IQueryable<Employee>> GetAll()
+        public IQueryable<Employee> GetAll()
         {
-            var employee = await buildingContext.Employees.Include(opt => opt.IdpositionNavigation).ToListAsync();
+            var employee = buildingContext.Employees.Include(opt => opt.IdpositionNavigation);
             return employee.AsQueryable();
         }
         public async Task<IEnumerable<Employee>> GetQuery(int id)
@@ -65,5 +72,10 @@ namespace Building.DAL.Repositories
         {
             return await buildingContext.Positions.FirstOrDefaultAsync(c => c.Idposition == positionId);
         }
+        public IQueryable<string> GetAllPosition()
+        {
+            return  buildingContext.Positions.Select(c => c.Name).AsQueryable();
+        }
+        
     }
 }

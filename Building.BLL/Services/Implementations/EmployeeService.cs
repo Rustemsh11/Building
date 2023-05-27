@@ -4,6 +4,7 @@ using Building.Domain.Entity;
 using Building.Domain.Enum;
 using Building.Domain.Response;
 using Building.Domain.ViewModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace Building.BLL.Services.Implementations
 {
@@ -14,7 +15,9 @@ namespace Building.BLL.Services.Implementations
         {
             employeeRepo = repo;
         }
-        
+
+       
+
         public async Task<BaseResponse<Employee>> GetEmployee(int id)
         {
             try

@@ -1,0 +1,189 @@
+﻿@model Building.Domain.ViewModel.EmployeeViewModel
+
+<style>
+    label {
+        padding-left: 15px;
+        font-size: medium;
+    }
+
+    input[type=text] {
+        width: 100%;
+        
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+
+        input[type=text]:focus {
+            border: 3px solid #1E90FF;
+        }
+    .selectedList {
+        width: 100%;
+        height: 49px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+
+    .selectedList:focus {
+            border: 3px solid #1E90FF;
+        }
+    input[type=password] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+
+        input[type=password]:focus {
+            border: 3px solid #1E90FF;
+        }
+
+    input[type=date] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        outline: none;
+        background: #E0FFFF;
+    }
+
+        input[type=date]:focus {
+            border: 3px solid #1E90FF;
+        }
+
+
+    #back {
+        position: relative;
+        top: 30px
+    }
+
+    #title {
+        position: relative;
+        left: 190px
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">       
+        <div class="col">
+
+            <h2 class="display-5" id="title">Добавление нового сотрудника</h2>
+
+        </div>
+    </div>
+    <hr class="border border-primary border-2 opacity-75">
+    <br />
+    <div class="row">
+
+        <div class="col-1"></div>
+
+        <div class="col-10 border border-2 border-primary rounded-3">
+            <br />
+            <form asp-action="Registr" asp-controller="Authentication" method="post">
+                <div style="margin: 15px;">
+
+                    <br />
+                    <div class="row">
+
+                        <div class="col">
+
+                            <p>
+                                <label asp-for="SecondName">Фамилия</label><br />
+                                <input type="text" asp-for="SecondName" />
+                            </p>
+                        </div>
+                        <div class="col">
+
+                            <p>
+                                <label asp-for="Name">Имя</label><br />
+                                <input type="text" asp-for="Name" />
+                            </p>
+                        </div>
+                        <div class="col">
+
+                            <p>
+                                <label asp-for="MiddleName">Отчество</label><br />
+                                <input type="text" asp-for="MiddleName" />
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col">
+
+                            <p>
+                                <label asp-for="Position">Должность</label><br />
+                                @Html.DropDownListFor(model => model.Position, (SelectList)ViewBag.PositionNames, "Выбрать...", new { @class = "selectedList form-control"})
+                                @*<input type="text" asp-for="Position"  />*@
+                            </p>
+                        </div>
+                        <div class="col">
+
+                            <p>
+                                <label asp-for="Birthday">Дата рождения</label><br />
+                                <input type="date" asp-for="Birthday"  />
+                            </p>
+                        </div>
+                        <div class="col">
+
+                            <p>
+                                <label asp-for="Phone">Телефон</label><br />
+                                <input type="text" asp-for="Phone" />
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col">
+
+                            <p>
+                                <label asp-for="Login">Логин</label><br />
+                                <input type="text" asp-for="Login"  />
+                            </p>
+                        </div>
+                        <div class="col">
+
+                            <p>
+                                <label asp-for="Password">Пароль</label><br />
+                                <input type="password" asp-for="Password" />
+                            </p>
+                        </div>
+                        <div class="col">
+
+                            <p>
+                                <label asp-for="ConfirmPassword">Подтвердите пароль</label><br />
+                                <input type="password" asp-for="ConfirmPassword" />
+                            </p>
+                        </div>
+                    </div>
+                    
+                    
+                    <br />
+                    <p class="text-center">
+                        <input type="submit" class="btn btn-outline-primary border border-1 border-primary" value="Сохранить" />
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

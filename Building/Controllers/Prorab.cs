@@ -6,6 +6,7 @@ using Building.Domain.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System.Data;
 using System.Security.Claims;
 
@@ -104,7 +105,7 @@ namespace Building.Controllers
         /// </summary>          
         int i = 1;
         [HttpPost]
-        public async Task<JsonResult> CreateQuery(IEnumerable<QueryViewModel> queries)
+        public async Task CreateQuery(IEnumerable<QueryViewModel> queries)
         {
             if (queries.Count() != 0)
             {
@@ -139,11 +140,11 @@ namespace Building.Controllers
 
                 }
                 
-                return Json("Заявка успешно создана");
+                
 
 
             }
-            return Json("Добавьте записи");
+            
         }
 
 

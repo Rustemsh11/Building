@@ -9,8 +9,9 @@ namespace Building.DAL.Interfaces
 {
     public interface IEmployeeRepository:IBaseRepository<Employee>
     {
-        Task<IQueryable<Employee>> GetAll();
+        IQueryable<Employee> GetAll();
         Task<EmployeesBuilding> GetEmployeeSite(int id);
         Task<Position> GetEmployeePosition(int positionId);
+        IQueryable<string> GetAllPosition();
     }
 }

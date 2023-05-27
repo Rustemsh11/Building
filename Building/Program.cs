@@ -27,12 +27,12 @@ builder.Services.AddScoped<IQueryService, QueryService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IMaterialService, MaterialService>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 builder.Services.AddScoped<IQueryDetailsService, QueryDetailsService>();
 builder.Services.AddScoped<IBuildingSiteService, BuildingSiteService>();
 builder.Services.AddScoped<ICatalogService, CatalogService>();
-
-
 builder.Services.AddTransient<Email>();
+
 builder.Services.Configure<FormOptions>(o => {
     o.ValueLengthLimit = int.MaxValue;
     o.MultipartBodyLengthLimit = int.MaxValue;

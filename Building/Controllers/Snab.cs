@@ -8,6 +8,7 @@ using Building.Helper;
 using Building.Helper.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+//using Microsoft.Office.Interop.Word;
 using Newtonsoft.Json;
 using System;
 using System.Security.Claims;
@@ -281,6 +282,26 @@ namespace Building.Controllers
             var list = StroyPriceParsing.ParsTovar(getPage);
             return View(list);
         }
+        [HttpGet]
+        public async Task<IActionResult> CheckInStorage(string materialName)
+        {
+            var materials = await GetMaterialFromStorage1C();
+            var result = materials.Select(c => c.Name =="Плиты перекрытия").ToList();
+            return View();
+        }
+        private async Task<List<MaterialsFrom1C>> GetMaterialFromStorage1C()
+        {
+            List<MaterialsFrom1C> materials = new List<MaterialsFrom1C>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("http://localhost/Tovar/hs/tovars/GetTovarsList"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    materials = JsonConvert.DeserializeObject<List<MaterialsFrom1C>>(apiResponse);
+                }
+            }
+            return materials;
+        } 
          
         public async Task<IActionResult> CreateDoc(int id)
         {
@@ -292,10 +313,7 @@ namespace Building.Controllers
 
             return View(docInfo);
         }
-        private async void CreateDocument(IFormCollection formCollection)
-        {
-            
-        }
+
         [HttpPost]
         public async Task<IActionResult> CreateDoc(IFormCollection formCollection)
         {
@@ -309,7 +327,7 @@ namespace Building.Controllers
             string inn = formCollection["SuplyerINN"];
             string kpp = formCollection["SuplyerKPP"];
             string responseDate = formCollection["ResponseDate"];
-            bool isSendEmail = bool.Parse(formCollection["selected"]);
+            bool? isSendEmail = formCollection["IsSendEmail"] == "" ? false : true;
 
             if (getid != null)
             {
@@ -333,7 +351,7 @@ namespace Building.Controllers
                 doc.Create();
 
 
-                if (isSendEmail)
+                if ((bool)isSendEmail)
                 {
                     EmailData emailData = new EmailData()
                     {
@@ -353,13 +371,7 @@ namespace Building.Controllers
             }
             return RedirectToAction("CreateDoc");
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateDocAndSend(IFormCollection formCollection)
-        {
-            CreateDocument(formCollection);
-            
-            return RedirectToAction("CreateDoc");
-        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetDeliveredOrder(int id, SortState sortOrder = SortState.NameAsc)

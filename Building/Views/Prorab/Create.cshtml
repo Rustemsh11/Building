@@ -84,6 +84,53 @@
         background: #E0FFFF;
     }
 
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1050;
+        display: none;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgba(0,0,0,.5)
+    }
+
+    .modal__dialog {
+        max-width: 500px;
+        margin: 40px auto
+    }
+
+    .modal__content {
+        position: relative;
+        width: 100%;
+        padding: 40px;
+        background-color: #fff;
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: 4px;
+        max-height: 80vh;
+        overflow-y: auto
+    }
+
+    .modal__close {
+        position: absolute;
+        top: 8px;
+        right: 14px;
+        font-size: 30px;
+        color: #000;
+        opacity: .5;
+        font-weight: 700;
+        border: none;
+        background-color: transparent;
+        cursor: pointer
+    }
+
+    .modal__title {
+        text-align: center;
+        font-size: 22px;
+        text-transform: uppercase
+    }
+
     
     </style>
 
@@ -163,6 +210,10 @@
             </tfoot>
         </table>
         <input type="button" id="btnSave"  class="btn  btn-primary position-absolute bottom-0 start-50 translate-middle " value="Создать Заявку" />
+
+    
+
+
 @*    </form>*@
     @*<div class="row">
 
@@ -194,6 +245,14 @@
 
 
 
+</div>
+<div class="modal">
+    <div class="modal__dialog">
+        <div class="modal__content">
+            <div data-close class="modal__close">&times;</div>
+            <div class="modal__title">Ваша заявка успешно создано!</div>
+        </div>
+    </div>
 </div>
 
 
@@ -319,7 +378,7 @@
 
         $("body").on("click", "#btnSave", function () {
             //Loop through the Table rows and build a JSON array.
-            var queries = new Array();
+            let queries = new Array();
             $("#tblQuery TBODY TR").each(function () {
 
                 var row = $(this);
@@ -338,7 +397,19 @@
             
             
             $.post('@Url.Action("CreateQuery")', { queries: queries});
-            alert("Заявка создана!")
+            //alert("Wyu");
+
+            const modal = document.querySelector('.modal__dialog');
+
+            
+            modal.style.display = 'block';
+            //document.body.style.overflow = 'hidden';
+            //setTimeout(() => {
+                
+                
+            //    modal.style.display = 'none'
+            //}, 4000);
+
         });
     </script>
     <script>

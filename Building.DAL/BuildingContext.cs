@@ -80,7 +80,7 @@ namespace Building.DAL
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.Property(e => e.EmployeeId)
-                    .ValueGeneratedNever()
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("EmployeeID");
 
                 entity.Property(e => e.Birthday)
@@ -131,13 +131,13 @@ namespace Building.DAL
                 entity.HasOne(d => d.Building)
                     .WithMany()
                     .HasForeignKey(d => d.BuildingId)
-                    .HasConstraintName("FK_EmployeesBuilding_BuildingSites");
+                    .HasConstraintName("FK_EmployeesBuilding_BuildingSites"); 
 
                 entity.HasOne(d => d.Employee)
                     .WithMany()
                     .HasForeignKey(d => d.EmployeeId)
                     .HasConstraintName("FK_EmployeesBuilding_Employees");
-            });
+            });                         
 
             modelBuilder.Entity<Material>(entity =>
             {

@@ -7,10 +7,13 @@ using Building.Domain.DTO;
 using Building.Domain.Entity;
 using Building.Domain.Enum;
 using Building.Domain.Response;
+using Building.Domain.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,12 +21,85 @@ namespace Building.BLL.Services.Implementations
 {
     public class LoginService:ILoginService
     {
-        private readonly IEmployeeRepository  employeeRepository; 
+        private readonly IEmployeeRepository  employeeRepository;
+        private readonly IPositionRepository positionRepository; 
  
-        public LoginService(IEmployeeRepository employeeRepository)
+        public LoginService(IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
         {
             this.employeeRepository = employeeRepository;
+            this.positionRepository = positionRepository;
            
+        }
+
+        public async Task<BaseResponse<List<string>>> GetAllPositionName()
+        {
+            try
+            {
+                var positionName = await employeeRepository.GetAllPosition().ToListAsync();
+                if (positionName != null)
+                {
+                    var response = new BaseResponse<List<string>>()
+                    {
+                        Data = positionName,
+                        StatusCode = Domain.Enum.StatusCode.OK
+                    };
+                    return response;
+                }
+                else
+                {
+                    var response = new BaseResponse<List<string>>()
+                    {
+                        Description = "Positions name not found"
+                    };
+                    return response;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<List<string>>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.ServerError
+                };
+            }
+
+        }
+        public async Task Registr(EmployeeViewModel employee)
+        {
+            try
+            {
+                var user = await employeeRepository.GetAll().FirstOrDefaultAsync(c => c.Login == employee.Login);
+
+                if (user != null)
+                {
+                    throw new ArgumentException();
+                }
+
+                user = new Employee()
+                {
+                    Name = employee.Name,
+                    SecondName = employee.SecondName,
+                    MiddleName = employee.MiddleName,
+                    Idposition = await positionRepository.GetIdPosition().Where(c => c.Name == employee.Position).Select(c => c.Idposition).FirstAsync(),
+                    Birthday = employee.Birthday,
+                    Phone = employee.Phone,
+                    Login = employee.Login,
+                    Password = HashPassword(employee.Password)
+                };
+                employeeRepository.Create(user);
+                
+            }
+            catch (Exception ex)
+            {
+                var exeption = new BaseResponse<Employee>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.ServerError,
+                };                
+            }
+
+
         }
 
         private ClaimsIdentity Authenticate(Employee employee)
@@ -45,8 +121,8 @@ namespace Building.BLL.Services.Implementations
         {
             try
             {
-                IQueryable<Employee> getAllUser = await employeeRepository.GetAll();
-                var user = getAllUser.FirstOrDefault(c => c.Login == model.Login);
+                IQueryable<Employee> getAllUser =  employeeRepository.GetAll();
+                var user = await getAllUser.FirstOrDefaultAsync(c => c.Login == model.Login);
                 
                 if (user == null)
                 {
@@ -56,7 +132,7 @@ namespace Building.BLL.Services.Implementations
                     };
 
                 }
-                if (model.Password != user.Password)
+                if (user.Password != HashPassword(model.Password))
                 {
                     return new BaseResponse<ClaimsIdentity>()
                     {
@@ -82,6 +158,15 @@ namespace Building.BLL.Services.Implementations
                     Description = ex.Message,
                     StatusCode = StatusCode.ServerError
                 };
+            }
+        }
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashByte = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                var hash = BitConverter.ToString(hashByte).Replace("-", "").ToLower();
+                return hash;
             }
         }
     }

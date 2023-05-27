@@ -139,7 +139,7 @@
 
 
                     <th class="text-center pt-3"><a class="btn btn-primary" asp-action="FindSuplyer" asp-controller="Snab" asp-route-catalogName="@item.Material.Catalog.Name" asp-route-materialName="@item.Material.Name" asp-route-queryId="@item.QueryId">Подобрать</a></th>
-                    <th class="text-center pt-3"><input type="submit" class="btn btn-primary" value="Проверить"/></th>
+                    <th class="text-center pt-3"><a class="btn btn-primary" asp-action="CheckInStorage" asp-controller="Snab" asp-route-materialName="@item.Material.Name" />Проверить</th>
                 </tr>
             }
         </tbody>

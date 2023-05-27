@@ -158,6 +158,9 @@
                                                 <li class="nav-item">
                                                     <a class="nav-link active text-light" aria-current="page" asp-action="GetMpz" asp-route-id="@User.Claims.FirstOrDefault(c=>c.Type==ClaimTypes.NameIdentifier).Value">МПЗ</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link active text-light" aria-current="page" asp-action="AddnewEmployee" asp-controller="Authentication">Добавить нового сотрудника</a>
+                                                </li>
                                         }
                                             </ul>
                                         </div>
