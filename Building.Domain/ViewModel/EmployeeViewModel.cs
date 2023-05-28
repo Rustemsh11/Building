@@ -19,6 +19,7 @@ namespace Building.Domain.ViewModel
         public string? Birthday { get; set; }
         public string? Phone { get; set; }
         public string? Position { get; set; }
+        public List<string> Site { get; set; }
         public string? Login { get; set; }
 
 

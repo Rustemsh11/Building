@@ -120,7 +120,9 @@ namespace Building.DAL
 
             modelBuilder.Entity<EmployeesBuilding>(entity =>
             {
-                entity.HasNoKey();
+                entity.Property(e => e.EmployeesBuildingID)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("EmployeeBuildingID");
 
                 entity.ToTable("EmployeesBuilding");
 

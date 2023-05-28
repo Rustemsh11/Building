@@ -19,10 +19,12 @@ namespace Building.Controllers
     {
         private readonly ILoginService loginService;
         private readonly IMapper mapping;
-        public Authentication(ILoginService loginService, IMapper mapping)
+        private readonly IBuildingSiteService buildingSiteService;
+        public Authentication(ILoginService loginService, IMapper mapping, IBuildingSiteService buildingSiteService)
         {
             this.loginService = loginService;
             this.mapping = mapping;
+            this.buildingSiteService = buildingSiteService;
         }
 
         [HttpGet]
@@ -31,6 +33,9 @@ namespace Building.Controllers
 
             var names = await loginService.GetAllPositionName();
             ViewBag.PositionNames = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(names.Data);
+
+            var sites = await buildingSiteService.GetAll();
+            ViewBag.SiteNames = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(sites.Data.Select(c=>c.Name));
             return View();
         }
 

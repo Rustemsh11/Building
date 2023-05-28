@@ -5,6 +5,7 @@ namespace Building.Domain.Entity
 {
     public partial class EmployeesBuilding
     {
+        public int EmployeesBuildingID { get; set; }
         public int? EmployeeId { get; set; }
         public int? BuildingId { get; set; }
 

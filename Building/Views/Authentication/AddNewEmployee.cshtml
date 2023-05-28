@@ -128,54 +128,65 @@
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col">
 
-                            <p>
-                                <label asp-for="Position">Должность</label><br />
-                                @Html.DropDownListFor(model => model.Position, (SelectList)ViewBag.PositionNames, "Выбрать...", new { @class = "selectedList form-control"})
-                                @*<input type="text" asp-for="Position"  />*@
-                            </p>
-                        </div>
-                        <div class="col">
+                        <div class="row">
+                        
+                            <div class="col">
 
-                            <p>
-                                <label asp-for="Birthday">Дата рождения</label><br />
-                                <input type="date" asp-for="Birthday"  />
-                            </p>
-                        </div>
-                        <div class="col">
+                                <p>
+                                    <label asp-for="Birthday">Дата рождения</label><br />
+                                    <input type="date" asp-for="Birthday"  />
+                                </p>
+                            </div>
+                            <div class="col">
 
-                            <p>
-                                <label asp-for="Phone">Телефон</label><br />
-                                <input type="text" asp-for="Phone" />
-                            </p>
+                                <p>
+                                    <label asp-for="Phone">Телефон</label><br />
+                                    <input type="text" asp-for="Phone" />
+                                </p>
+                            </div>
                         </div>
+                        <br />
+                        <div class="row">
+                            <div class="col">
+
+                                <p>
+                                    <label asp-for="Login">Логин</label><br />
+                                    <input type="text" asp-for="Login"  />
+                                </p>
+                            </div>
+                            <div class="col">
+
+                                <p>
+                                    <label asp-for="Password">Пароль</label><br />
+                                    <input type="password" asp-for="Password" />
+                                </p>
+                            </div>
+                            <div class="col">
+
+                                <p>
+                                    <label asp-for="ConfirmPassword">Подтвердите пароль</label><br />
+                                    <input type="password" asp-for="ConfirmPassword" />
+                                </p>
+                            </div>
+                        </div>
+                    <div class="col">
+
+                        <p>
+                            <label asp-for="Position">Должность</label><br />
+                            @Html.DropDownListFor(model => model.Position, (SelectList)ViewBag.PositionNames, "Выбрать...", new { @class = "selectedList form-control"})
+                            @*<input type="text" asp-for="Position"  />*@
+                        </p>
                     </div>
-                    <br />
-                    <div class="row">
-                        <div class="col">
+                    <div class="col">
 
-                            <p>
-                                <label asp-for="Login">Логин</label><br />
-                                <input type="text" asp-for="Login"  />
-                            </p>
-                        </div>
-                        <div class="col">
+                        <p>
 
-                            <p>
-                                <label asp-for="Password">Пароль</label><br />
-                                <input type="password" asp-for="Password" />
-                            </p>
-                        </div>
-                        <div class="col">
-
-                            <p>
-                                <label asp-for="ConfirmPassword">Подтвердите пароль</label><br />
-                                <input type="password" asp-for="ConfirmPassword" />
-                            </p>
-                        </div>
+                            <label asp-for="Position">Ответственная площадка</label><br />
+                            @Html.DropDownListFor(model => model.Site, (SelectList)ViewBag.SiteNames, new { @class = "selectedList form-control",multiple="multiple"})
+                        </p>
                     </div>
-                    
+                    </div>
                     
                     <br />
                     <p class="text-center">

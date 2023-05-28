@@ -22,13 +22,16 @@ namespace Building.BLL.Services.Implementations
     public class LoginService:ILoginService
     {
         private readonly IEmployeeRepository  employeeRepository;
-        private readonly IPositionRepository positionRepository; 
+        private readonly IPositionRepository positionRepository;
+        private readonly IBuildingSiteRepository buildingSiteRepository;
+        private readonly IEmployeeBuildingRepository employeeBuildingRepository;
  
-        public LoginService(IEmployeeRepository employeeRepository, IPositionRepository positionRepository)
+        public LoginService(IEmployeeRepository employeeRepository, IPositionRepository positionRepository, IBuildingSiteRepository buildingSiteRepository, IEmployeeBuildingRepository employeeBuildingRepository)
         {
             this.employeeRepository = employeeRepository;
             this.positionRepository = positionRepository;
-           
+            this.buildingSiteRepository = buildingSiteRepository;
+            this.employeeBuildingRepository = employeeBuildingRepository;
         }
 
         public async Task<BaseResponse<List<string>>> GetAllPositionName()
@@ -76,18 +79,31 @@ namespace Building.BLL.Services.Implementations
                     throw new ArgumentException();
                 }
 
-                user = new Employee()
+
+                var newEmp = new Employee();
+
+                newEmp.Name = employee.Name;
+                newEmp.SecondName = employee.SecondName;
+                newEmp.MiddleName = employee.MiddleName;
+                newEmp.Idposition = await positionRepository.GetIdPosition().Where(c => c.Name == employee.Position).Select(c => c.Idposition).FirstAsync();
+                newEmp.Birthday = employee.Birthday;
+                newEmp.Phone = employee.Phone;
+                newEmp.Login = employee.Login;
+                newEmp.Password = HashPassword(employee.Password);
+                
+                employeeRepository.Create(newEmp);
+
+                foreach (var item in employee.Site)
                 {
-                    Name = employee.Name,
-                    SecondName = employee.SecondName,
-                    MiddleName = employee.MiddleName,
-                    Idposition = await positionRepository.GetIdPosition().Where(c => c.Name == employee.Position).Select(c => c.Idposition).FirstAsync(),
-                    Birthday = employee.Birthday,
-                    Phone = employee.Phone,
-                    Login = employee.Login,
-                    Password = HashPassword(employee.Password)
-                };
-                employeeRepository.Create(user);
+                    var emplBuilding = new EmployeesBuilding();
+
+                    emplBuilding.BuildingId = buildingSiteRepository.GetIdByName(item);
+                    emplBuilding.EmployeeId = newEmp.EmployeeId;
+
+                    
+
+                    employeeBuildingRepository.Create(emplBuilding);
+                }
                 
             }
             catch (Exception ex)
