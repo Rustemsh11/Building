@@ -15,6 +15,7 @@ namespace Building.BLL.Services.Interfaces
         Task<BaseResponse<EmployeesBuilding>> GetEmployeeSite(int id);
         Task<BaseResponse<ProfileVIewModel>> ProfileInfo(int id);
         Task<BaseResponse<bool>> UpdateEmployee(Employee employee);
+        Task<BaseResponse<List<Employee>>> GetAllProrab();
 
     }
 }

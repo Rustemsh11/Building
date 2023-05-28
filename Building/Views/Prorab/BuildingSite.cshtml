@@ -26,7 +26,7 @@
             </div>
             <div class="col">
                 <p>
-                    <img src="@Model.Photo" class="rounded mx-auto d-block pt-4 border border-1 border-primary" width="400px" height="300px" />
+                    <img src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Photo))" class="rounded mx-auto d-block pt-4 border border-1 border-primary" width="400px" height="300px" />
                 </p>
             </div>
         </div>

@@ -35,10 +35,10 @@ namespace Building.DAL
         {
             modelBuilder.Entity<BuildingSite>(entity =>
             {
-                entity.HasKey(e => e.BuildingId);
+                entity.HasKey(e => e.BuildingID);
 
-                entity.Property(e => e.BuildingId)
-                    .ValueGeneratedNever()
+                entity.Property(e => e.BuildingID)
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("BuildingID");
 
                 entity.Property(e => e.Address)

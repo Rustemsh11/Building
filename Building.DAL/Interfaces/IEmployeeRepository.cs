@@ -13,5 +13,6 @@ namespace Building.DAL.Interfaces
         Task<EmployeesBuilding> GetEmployeeSite(int id);
         Task<Position> GetEmployeePosition(int positionId);
         IQueryable<string> GetAllPosition();
+        IQueryable<Employee> GetAllProprab();
     }
 }

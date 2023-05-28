@@ -76,6 +76,10 @@ namespace Building.DAL.Repositories
         {
             return  buildingContext.Positions.Select(c => c.Name).AsQueryable();
         }
-        
+
+        public IQueryable<Employee> GetAllProprab()
+        {
+            return  buildingContext.Employees.Include(c => c.IdpositionNavigation).Where(c => c.IdpositionNavigation.Name == "Прораб");
+        }
     }
 }

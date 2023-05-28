@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Building.BLL.Services.Interfaces;
+using Building.DAL;
 using Building.Domain.Entity;
 using Building.Domain.Enum;
 using Building.Domain.ViewModel;
@@ -23,11 +24,13 @@ namespace Building.Controllers
         private readonly IQueryDetailsService queryDetailsService;
         private readonly IBuildingSiteService buildingSiteService;
         private readonly ICatalogService catalogService;
+        private readonly BuildingContext building;
 
         public Prorab(IEmployeeService employeeService, IMapper mapper,
                         IQueryService queryService, IMaterialService materialService,
                         IQueryDetailsService queryDetailsService, IBuildingSiteService buildingSiteService,
-                        ICatalogService catalogService)
+                        ICatalogService catalogService,
+                        BuildingContext building)
         {
             this.employeeService = employeeService;
             this.mapper = mapper;
@@ -36,6 +39,7 @@ namespace Building.Controllers
             this.queryDetailsService = queryDetailsService;
             this.buildingSiteService = buildingSiteService;
             this.catalogService = catalogService;
+            this.building = building;
         }
 
         /// <summary>
@@ -61,6 +65,39 @@ namespace Building.Controllers
 
             return View(response);
         }
+
+
+
+        [HttpGet]
+        public IActionResult Change()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Changes(List<IFormFile> postedFiles)
+        {
+            var  s = await buildingSiteService.GetAll();
+            var site = s.Data.First(c=>c.BuildingID == 3);
+            if (postedFiles.Count > 0)
+            {
+                foreach (var item in postedFiles)
+                {
+                    byte[] image = null;
+                    using (var fs1 = item.OpenReadStream())
+                    using (var ms1 = new MemoryStream())
+                    {
+                        fs1.CopyTo(ms1);
+                        image = ms1.ToArray();
+                    }
+                    site.Photo = image;
+                    building.BuildingSites.Update(site);
+                    building.SaveChanges();
+
+                }
+            }
+            return RedirectToAction("Change");
+        }
+
 
 
 

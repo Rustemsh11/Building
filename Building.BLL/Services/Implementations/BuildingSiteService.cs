@@ -3,6 +3,8 @@ using Building.DAL.Interfaces;
 using Building.Domain.Entity;
 using Building.Domain.Enum;
 using Building.Domain.Response;
+using Building.Domain.ViewModel;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +16,97 @@ namespace Building.BLL.Services.Implementations
     public class BuildingSiteService : IBuildingSiteService
     {
         private readonly IBuildingSiteRepository buildingSiteRepository;
-        public BuildingSiteService(IBuildingSiteRepository buildingSiteRepository)
+        private readonly IEmployeeService employeeService;
+        private readonly IEmployeeBuildingRepository employeeBuildingRepository;
+        public BuildingSiteService(IBuildingSiteRepository buildingSiteRepository, IEmployeeService employeeService, IEmployeeBuildingRepository buildingRepository)
         {
             this.buildingSiteRepository = buildingSiteRepository;
+            this.employeeService = employeeService;
+            this.employeeBuildingRepository = buildingRepository;
+        }
+
+
+        private async Task<bool> CreateSiteResponsibility(BuildingSiteViewModel siteViewModel)
+        {
+            var prorabName = siteViewModel.ProrabName.Split(" ");
+            var prorab = await employeeService.GetAllProrab();
+
+            var emplBuilding = new EmployeesBuilding();
+            emplBuilding.BuildingId = buildingSiteRepository.GetIdByName(siteViewModel.Name);
+            emplBuilding.EmployeeId = prorab.Data.FirstOrDefault(c => c.SecondName == prorabName[0]).EmployeeId;
+
+
+            return employeeBuildingRepository.Create(emplBuilding);
+        }
+
+        public async Task<BaseResponse<bool>> AddNewSite(BuildingSiteViewModel siteViewModel, List<IFormFile> postedFiles)
+        {
+            try
+            {
+                if (siteViewModel != null)
+                {
+                    var site = new BuildingSite();
+                    site.Name = siteViewModel.Name;
+                    site.Address = siteViewModel.Address;
+                    site.Deadline = siteViewModel.Deadline;
+
+                    if (postedFiles.Count > 0)
+                    {
+                        foreach (var item in postedFiles)
+                        {
+                            byte[] image = null;
+                            using (var fs1 = item.OpenReadStream())
+                            using (var ms1 = new MemoryStream())
+                            {
+                                fs1.CopyTo(ms1);
+                                image = ms1.ToArray();
+                            }
+                            site.Photo = image;
+
+                        }
+                    }
+
+                    bool result = buildingSiteRepository.Create(site);
+                    bool isCreated = await CreateSiteResponsibility(siteViewModel);
+                    if (result && isCreated)
+                    {
+                        var response = new BaseResponse<bool>()
+                        {
+                            Data = result,
+                            StatusCode = Domain.Enum.StatusCode.OK
+                        };
+                        return response;
+                    }
+
+                    
+
+                    else
+                    {
+                        var response = new BaseResponse<bool>()
+                        {
+                            Description = "Building sites not created"
+                        };
+                        return response;
+                    }
+                }
+                else
+                {
+                    var response = new BaseResponse<bool>()
+                    {
+                        Description = "Argument is null"
+                    };
+                    return response;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<bool> ()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.ServerError
+                };
+            }
         }
 
         public async Task<BaseResponse<IEnumerable<BuildingSite>>> GetAll()

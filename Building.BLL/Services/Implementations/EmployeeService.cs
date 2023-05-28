@@ -16,7 +16,39 @@ namespace Building.BLL.Services.Implementations
             employeeRepo = repo;
         }
 
-       
+        public async Task<BaseResponse<List<Employee>>> GetAllProrab()
+        {
+            try
+            {
+                var employee = await employeeRepo.GetAllProprab().ToListAsync();
+                if (employee != null)
+                {
+                    var response = new BaseResponse<List<Employee>>()
+                    {
+                        Data = employee,
+                        StatusCode = Domain.Enum.StatusCode.OK
+                    };
+                    return response;
+                }
+                else
+                {
+                    var response = new BaseResponse<List<Employee>>()
+                    {
+                        Description = "Employees not found"
+                    };
+                    return response;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<List<Employee>>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.ServerError
+                };
+            }
+        }
 
         public async Task<BaseResponse<Employee>> GetEmployee(int id)
         {

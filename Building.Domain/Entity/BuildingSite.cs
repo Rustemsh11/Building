@@ -10,10 +10,10 @@ namespace Building.Domain.Entity
             Queries = new HashSet<Query>();
         }
 
-        public int BuildingId { get; set; }
+        public int BuildingID { get; set; }
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;
-        public string? Photo { get; set; } 
+        public byte[]? Photo { get; set; }
         public string? Deadline { get; set; } 
 
         public virtual ICollection<Query> Queries { get; set; }

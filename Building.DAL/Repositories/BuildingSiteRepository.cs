@@ -12,9 +12,20 @@ namespace Building.DAL.Repositories
             this.buildingContext = buildingContext;
         }
 
+        public bool Create(BuildingSite entity)
+        {
+            if(entity != null)
+            {
+                buildingContext.BuildingSites.Add(entity);
+                buildingContext.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
         public async Task<BuildingSite> Get(int? id)
         {
-            return await buildingContext.BuildingSites.FirstOrDefaultAsync(c => c.BuildingId == id);
+            return await buildingContext.BuildingSites.FirstOrDefaultAsync(c => c.BuildingID == id);
         }
 
         public async Task<IEnumerable<BuildingSite>> GetAll()
@@ -24,7 +35,7 @@ namespace Building.DAL.Repositories
 
         public int GetIdByName(string siteName)
         {
-            return buildingContext.BuildingSites.Where(c=>c.Name==siteName).Select(c => c.BuildingId).First();
+            return buildingContext.BuildingSites.Where(c=>c.Name==siteName).Select(c => c.BuildingID).First();
         }
     }
 }

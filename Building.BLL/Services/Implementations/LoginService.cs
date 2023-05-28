@@ -92,17 +92,20 @@ namespace Building.BLL.Services.Implementations
                 newEmp.Password = HashPassword(employee.Password);
                 
                 employeeRepository.Create(newEmp);
-
-                foreach (var item in employee.Site)
+                if(employee.Site != null)
                 {
-                    var emplBuilding = new EmployeesBuilding();
 
-                    emplBuilding.BuildingId = buildingSiteRepository.GetIdByName(item);
-                    emplBuilding.EmployeeId = newEmp.EmployeeId;
+                    foreach (var item in employee.Site)
+                    {
+                        var emplBuilding = new EmployeesBuilding();
+
+                        emplBuilding.BuildingId = buildingSiteRepository.GetIdByName(item);
+                        emplBuilding.EmployeeId = newEmp.EmployeeId;
 
                     
 
-                    employeeBuildingRepository.Create(emplBuilding);
+                        employeeBuildingRepository.Create(emplBuilding);
+                    }
                 }
                 
             }

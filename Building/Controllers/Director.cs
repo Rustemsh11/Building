@@ -2,6 +2,7 @@
 using Building.BLL.Services.Interfaces;
 using Building.Domain.Entity;
 using Building.Domain.Enum;
+using Building.Domain.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Security.Claims;
@@ -153,6 +154,23 @@ namespace Building.Controllers
             }
             await employeeService.UpdateEmployee(employee.Data);
             return RedirectToAction("Profile", new { id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddNewSite()
+        {
+            var prorab = await employeeService.GetAllProrab();
+            ViewBag.Prorab = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(prorab.Data.Select(c=>c.SecondName + " "+ c.Name) );
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNewSite(BuildingSiteViewModel siteViewModel, List<IFormFile> postedFiles)
+        {
+
+            await buildingSiteService.AddNewSite(siteViewModel, postedFiles);
+
+            return RedirectToAction("AddNewSite");
         }
     }
 }
