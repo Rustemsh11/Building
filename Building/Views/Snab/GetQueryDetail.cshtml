@@ -58,94 +58,178 @@
     <br />
     <br />
 
-<form method="get" >
+<div>
+
+    <form method="get" >
 
     
-    <table class="table" id="myTable">
-        <thead>
-            <tr>
-                <th class="text-center" scope="col"><input type="checkbox" class="form-check-input" name="allcheck" id="selectAll" /></th>
-                <th class="text-center" scope="col">Номенклатура</th>
-                <th class="text-center" scope="col">Количество</th>
-                <th class="text-center" scope="col">Ед.измерения</th>
-                <th class="text-center" scope="col">Дата доставки</th>
-                <th class="text-center" scope="col">Состояние</th>
-                <th class="text-center" scope="col">Подбор поставщика</th>
-                <th class="text-center" scope="col">Проверить на складе</th>
-                <th class="text-center" scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var item in Model)
-            {
-                <tr class="text-center">
-                    <th class="text-center pt-4"><input type="checkbox" class="form-check-input chkCheckBoxId" value="@item.ID" name="queryDetailId" /></th>
-                    <th class="text-center pt-4">@item.Name</th>
-                    <th class="text-center pt-4">@item.Count</th>
-                    <th class="text-center pt-4">@item.Measure</th>
-                    <th class="text-center pt-4">@item.Query.Deadline</th>
-                    <td class="pt-2 text-center">
-                        @if (item.State == "Заявка создана")
-                        {
-                            <label class="text-center">Заявка создана</label>
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" style="width:5%"></div>
-                            </div>
-                        }
-                        @if (item.State == "Заявка принята")
-                        {
-                            <label class="text-center">Заявка принята</label>
-                            <div class="progress">
-                                <div class="progress-bar   bg-dark" style="width:10%"></div>
-                            </div>
-                        }
-                        @if (item.State == "Найден поставщик")
-                        {
-                            <label class="text-center">Найден поставщик</label>
-                            <div class="progress">
-                                <div class="progress-bar   bg-primary" style="width:25%"></div>
-                            </div>
-                        }
-                        @if (item.State == "Заявка доставляется")
-                        {
-                            <label class="text-center">Заявка доставляется</label>
-                            <div class="progress">
-                                <div class="progress-bar   bg-info" style="width:50%"></div>
-                            </div>
-                        }
-                        @if (item.State == "Заявка доставлена")
-                        {
-                            <label class="text-center">Заявка доставлена</label>
-                            <div class="progress">
-                                <div class="progress-bar   bg-warning" style="width:90%"></div>
-                            </div>
-                        }
-                        @if (item.State == "Подтверждено")
-                        {
-                            <label class="text-center">Подтвержден</label>
-                            <div class="progress">
-                                <div class="progress-bar   bg-success" style="width:100%"></div>
-                            </div>
-                        }
-                        @if (item.State == "Опровергнут")
-                        {
-                            <label class="text-center">Опровергнут</label>
-                            <div class="progress">
-                                <div class="progress-bar   bg-danger" style="width:100%"></div>
-                            </div>
-                        }
-                    </td>
-
-
-                    <th class="text-center pt-3"><a class="btn btn-primary" asp-action="FindSuplyer" asp-controller="Snab" asp-route-catalogName="@item.Material.Catalog.Name" asp-route-materialName="@item.Material.Name" asp-route-queryId="@item.QueryId">Подобрать</a></th>
-                    <th class="text-center pt-3"><a class="btn btn-primary" asp-action="CheckInStorage" asp-controller="Snab" asp-route-materialName="@item.Material.Name" />Проверить</th>
+        <table class="table" id="myTable">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col"><input type="checkbox" class="form-check-input" name="allcheck" id="selectAll" /></th>
+                    <th class="text-center" scope="col">Номенклатура</th>
+                    <th class="text-center" scope="col">Количество</th>
+                    <th class="text-center" scope="col">Ед.измерения</th>
+                    <th class="text-center" scope="col">Дата доставки</th>
+                    <th class="text-center" scope="col">Состояние</th>
+                    <th class="text-center" scope="col">Подбор поставщика</th>
+                    <th class="text-center" scope="col">Проверить на складе</th>
+                    <th class="text-center" scope="col"></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</form>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                        <tr class="text-center">
+                        <th class="text-center pt-4"><input type="checkbox" class="form-check-input chkCheckBoxId" value="@item.ID" name="queryDetailId" /></th>
+                        <th class="text-center pt-4">@item.Name</th>
+                        <th class="text-center pt-4">@item.Count</th>
+                        <th class="text-center pt-4">@item.Measure</th>
+                        <th class="text-center pt-4">@item.Query.Deadline</th>
+                        <td class="pt-2 text-center">
+                            @if (item.State == "Заявка создана")
+                            {
+                                <label class="text-center">Заявка создана</label>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" style="width:5%"></div>
+                                </div>
+                            }
+                            @if (item.State == "Заявка принята")
+                            {
+                                <label class="text-center">Заявка принята</label>
+                                <div class="progress">
+                                    <div class="progress-bar   bg-dark" style="width:10%"></div>
+                                </div>
+                            }
+                            @if (item.State == "Найден поставщик")
+                            {
+                                <label class="text-center">Найден поставщик</label>
+                                <div class="progress">
+                                    <div class="progress-bar   bg-primary" style="width:25%"></div>
+                                </div>
+                            }
+                            @if (item.State == "Заявка доставляется")
+                            {
+                                <label class="text-center">Заявка доставляется</label>
+                                <div class="progress">
+                                    <div class="progress-bar   bg-info" style="width:50%"></div>
+                                </div>
+                            }
+                            @if (item.State == "Заявка доставлена")
+                            {
+                                <label class="text-center">Заявка доставлена</label>
+                                <div class="progress">
+                                    <div class="progress-bar   bg-warning" style="width:90%"></div>
+                                </div>
+                            }
+                            @if (item.State == "Подтверждено")
+                            {
+                                <label class="text-center">Подтвержден</label>
+                                <div class="progress">
+                                    <div class="progress-bar   bg-success" style="width:100%"></div>
+                                </div>
+                            }
+                            @if (item.State == "Опровергнут")
+                            {
+                                <label class="text-center">Опровергнут</label>
+                                <div class="progress">
+                                    <div class="progress-bar   bg-danger" style="width:100%"></div>
+                                </div>
+                            }
+                        </td>
+
+
+                        <th class="text-center pt-3"><a class="btn btn-primary" asp-action="FindSuplyer" asp-controller="Snab" asp-route-catalogName="@item.Material.Catalog.Name" asp-route-materialName="@item.Material.Name" asp-route-queryId="@item.QueryId">Подобрать</a></th>
+                        <th class="text-center pt-3">
+                            @Html.ActionLink("Проверить", "CheckInStorage", "Snab", new { materialName= item.Material.Name }, new
+                        {
+                        @class = "compItem btn btn-primary" ,
+                            @* Needed to link to the html of the modal*@
+                        data_target = "#modDialog",
+                            @* Tells the bootstrap javascript to do its thing*@
+                        data_toggle = "modal"
+                        })</th>
+                        @*<a class="btn btn-primary" id="chekStorageButton" asp-action="CheckInStorage" asp-controller="Snab" asp-route-materialName="@item.Material.Name" />*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
+    <div id="modDialog" class="modal" role="dialog">
+        <div id="dialogContent" class="modal-dialog modal-lg"></div>
+    </div>
 @section Scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".compItem").click(function (e) {
+
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+
+
+                });
+            });
+        })
+    </script>
+@*    <script>
+        class Material{
+            constructor(name, articul, count, measure){
+                this.name=name;
+                this.articul = articul;
+                this.count = count;
+                this.measure = measure;
+            }
+        }
+        let checkButton = document.querySelectorAll("#chekStorageButton");
+
+        const getResurce = async (url) =>{
+            const res = await fetch(url);
+
+            if(!res.ok){
+                throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+            }
+            return await res.json();
+        };
+        const materialName = document.querySelectorAll
+        getResurce('/snab/CheckInStorage').then(data = > CreateModal(data)
+        });
+
+        function CreateModal(data){
+            data.forEach(({ name, articul, count, measure }) => {
+                const element = document.createElement('div');
+                element.style.display = 'none';
+                element.innerHTML = `
+                    <div class="row">
+                        <h3>Данные из базы 1С</h3>
+                        </br>
+                        <h1>Найдено товаров: ${data.length}</h1>
+                        <div class="col">
+                            <h1>Категория: ${articul}</h1>
+                            <h1>Материал: ${name} - ${count} ${measure}<h1>
+                        </div>
+                    </div>
+                `;
+
+                document.querySelector(".md").append(element);
+            };
+        };
+
+        checkButton.forEach(c=>{
+           c.addEventListener('click', e=>{
+                e.preventDefault();
+                getResurce('/snab/CheckInStorage').then(data => CreateModal(data)
+                });
+
+            });
+        });
+
+    </script>*@
 
     <script>
         $(document).ready(function () {

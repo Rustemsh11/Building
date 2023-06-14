@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AngleSharp.Io;
+using AutoMapper;
 using Building.BLL.Services.Implementations;
 using Building.BLL.Services.Interfaces;
 using Building.Domain.Entity;
@@ -106,7 +107,7 @@ namespace Building.Controllers
         {
             ViewBag.Catalog = new SelectList(materialService.GetCatalog().Data, "CatalogID", "Name");
             var buildingList = await buildingSiteService.GetAll();
-            ViewBag.Building = new SelectList(buildingList.Data, "BuildingId", "Name");
+            ViewBag.Building = new SelectList(buildingList.Data, "BuildingID", "Name");
             var emptyList = new List<QueryViewModel>();
 
             return View(emptyList);
@@ -286,8 +287,8 @@ namespace Building.Controllers
         public async Task<IActionResult> CheckInStorage(string materialName)
         {
             var materials = await GetMaterialFromStorage1C();
-            var result = materials.Select(c => c.Name =="Плиты перекрытия").ToList();
-            return View();
+            var result = materials.Where(c => c.Articul ==materialName).ToList();
+            return PartialView(result);
         }
         private async Task<List<MaterialsFrom1C>> GetMaterialFromStorage1C()
         {
@@ -298,6 +299,7 @@ namespace Building.Controllers
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     materials = JsonConvert.DeserializeObject<List<MaterialsFrom1C>>(apiResponse);
+                    
                 }
             }
             return materials;

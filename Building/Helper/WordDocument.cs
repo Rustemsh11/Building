@@ -6,15 +6,16 @@ namespace Building.Helper
 {
     public class WordDocument
     {
+        private string CompanyName = "ООО ГазСтройСервис";
+        private string CompanyINN = "7724673363";
+        private string CompanyKPP = "772401001";
+        private string Email = "rustemsh11@yandex.ru";
         public string SuplyerName { get; set; }
         public string SuplyerINN { get; set; }
         public string SuplyerKPP { get; set; }
-        public string CompanyName { get; set; }
-        public string CompanyINN { get; set; }
-        public string CompanyKPP { get; set; }
         public string SnabName { get; set; }
         public string SnabPhone { get; set; }
-        public string Email { get; set; }
+
         public string BuildingName { get; set; }
         public string BuildingAddress { get; set; }
         public string ResponseDate { get; set; }

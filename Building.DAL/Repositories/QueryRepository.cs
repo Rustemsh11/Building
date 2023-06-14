@@ -123,6 +123,15 @@ namespace Building.DAL.Repositories
             return queries;
         }
 
+        public IEnumerable<Query> GetMPZbySiteId(int siteId)
+        {
+            return buildingContext.Queries.Where(c => c.SiteId == siteId)
+                .Include(c=>c.QueryDetails)
+                .Include(c => c.Snab)
+                .Include(c => c.Site)
+                .Include(c => c.Prorab).ToList();
+        }
+
 
         /// <summary>
         /// get no agreement query

@@ -14,13 +14,15 @@ namespace Building.Controllers
         private readonly IBuildingSiteService buildingSiteService;
         private readonly IMapper mapper;
         private readonly IQueryService queryService;
+        private readonly IQueryDetailsService queryDetailsService;
         private readonly IEmployeeService employeeService;
-        public Director(IBuildingSiteService buildingSiteService, IQueryService queryService, IEmployeeService employeeService, IMapper mapper)
+        public Director(IBuildingSiteService buildingSiteService, IQueryService queryService, IEmployeeService employeeService, IMapper mapper, IQueryDetailsService queryDetailsService)
         {
             this.buildingSiteService = buildingSiteService;
             this.queryService = queryService;
             this.employeeService = employeeService;
             this.mapper = mapper;
+            this.queryDetailsService = queryDetailsService;
         }
 
         public async Task<IActionResult> Main()
@@ -79,11 +81,26 @@ namespace Building.Controllers
             return Redirect(TempData["currenturl"].ToString());
             //return RedirectToAction("GetQuery", new { id = TempData["id"] });
         }
+        [HttpGet]
+        public async Task<IActionResult> GetMPZ(SortState sortOrder = SortState.DataDesc)
+        {
+            var res = await queryDetailsService.GetAllMPZ();
+            return View(res.Data);
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetDelivered()
+        {
+            var result = await queryDetailsService.GetDeliveredOrRefuted();
+            return View(result.Data);
+        }
 
         [HttpGet]
-        public IActionResult GetMpz(int id, SortState sortOrder = SortState.DataDesc)
+        public async Task<IActionResult> GetMpzBySite(int id, SortState sortOrder = SortState.DataDesc)
         {
-            var response = queryService.GetMPZ(id).Data;
+            var deliveredMaterials = await queryDetailsService.GetDeliveredBySiteID(id, "Подтверждено");
+
+            
             ViewBag.NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
             ViewBag.DataSort = sortOrder == SortState.DataDesc ? SortState.DataAsc : SortState.DataDesc;
             ViewBag.SnabSort = sortOrder == SortState.SnabDesc ? SortState.SnabAsc : SortState.SnabDesc;
@@ -112,7 +129,7 @@ namespace Building.Controllers
             //        break;
             //}
 
-            return View(response);
+            return View(deliveredMaterials.Data);
 
         }
         public async Task<IActionResult> Profile(int id)

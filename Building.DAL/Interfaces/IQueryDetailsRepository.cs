@@ -14,7 +14,9 @@ namespace Building.DAL.Interfaces
         Task<IEnumerable<QueryDetail>> GetQueryDetailsList(int queryDetailId);
         Task<IEnumerable<QueryDetail>> GetDelivered(int prorabId, string queryState);
         Task<IEnumerable<QueryDetail>> GetDeliveredBySnab(int snabId, string queryState);
+        Task<IEnumerable<QueryDetail>> GetDeliveredBySiteID(int siteId, string queryState);
+        Task<IEnumerable<QueryDetail>> GetDeliveredOrRefuted();
 
-        //Task<IEnumerable<QueryDetail>> Get(int id);
+        Task<IEnumerable<QueryDetail>> GetAllMPZ();
     }
 }

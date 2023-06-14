@@ -138,6 +138,7 @@
                         </a>
                     </th>
                     <th class="text-center" scope="col">Состояние</th>
+                    <th class="text-center" scope="col">Комментарий</th>
                     <th class="text-center" scope="col">
                         <a class="text-black" asp-action="GetMpz" asp-route-sortOrder="@ViewBag.SnabSort">
                             Снабженец
@@ -175,15 +176,24 @@
                         <th class="text-center pt-5">@Convert.ToDateTime(item.DeliveryDate).ToShortDateString()</th>
 
                         <th class="text-center pt-4">
+                            @if(@item.State == "Заявка доставлена"){
 
-                            <label class="text-center">Заявка подтверждена</label>
-                            <div class="progress">
-                                <div class="progress-bar   bg-success" style="width:100%"></div>
-                            </div>
+                                <label class="text-center">Заявка доставлена</label>
+                                <div class="progress">
+                                    <div class="progress-bar   bg-success" style="width:100%"></div>
+                                </div>
+                            }
+                            @if(@item.State == "Опровергнут"){
+
+                                <label class="text-center">Опровергнут</label>
+                                <div class="progress">
+                                    <div class="progress-bar   bg-danger" style="width:100%"></div>
+                                </div>
+                            }
 
                         </th>
 
-
+                        <th class="text-center pt-5">@item.Comment</th>
                         <th class="text-center pt-5">@item.Query.Snab.SecondName @item.Query.Snab.Name</th>
                         <th class="text-center pt-5">@item.Query.Site.Name</th>
 

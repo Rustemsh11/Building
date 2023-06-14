@@ -50,6 +50,37 @@ namespace Building.BLL.Services.Implementations
             }
         }
 
+        public async Task<BaseResponse<IEnumerable<QueryDetail>>> GetAllMPZ()
+        {
+            try
+            {
+
+                var result = await queryDetailsRepository.GetAllMPZ();
+                if (result != null)
+                {
+                    return new BaseResponse<IEnumerable<QueryDetail>>()
+                    {
+                        Data = result,
+                        StatusCode = Domain.Enum.StatusCode.OK
+                    };
+                }
+                return new BaseResponse<IEnumerable<QueryDetail>>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = "Not found query"
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<IEnumerable<QueryDetail>>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = ex.Message
+                };
+            }
+        }
+
         public async Task<BaseResponse<IEnumerable<QueryDetail>>> GetDelivered(int prorabId, string queryState)
         {
             try
@@ -81,12 +112,74 @@ namespace Building.BLL.Services.Implementations
             }
         }
 
+        public async Task<BaseResponse<IEnumerable<QueryDetail>>> GetDeliveredBySiteID(int siteId, string queryState)
+        {
+            try
+            {
+
+                var result = await queryDetailsRepository.GetDeliveredBySiteID(siteId, queryState);
+                if (result != null)
+                {
+                    return new BaseResponse<IEnumerable<QueryDetail>>()
+                    {
+                        Data = result,
+                        StatusCode = Domain.Enum.StatusCode.OK
+                    };
+                }
+                return new BaseResponse<IEnumerable<QueryDetail>>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = "Not found query"
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<IEnumerable<QueryDetail>>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = ex.Message
+                };
+            }
+        }
+
         public async Task<BaseResponse<IEnumerable<QueryDetail>>> GetDeliveredBySnab(int snabId,string queryState)
         {
             try
             {
 
                 var result = await queryDetailsRepository.GetDeliveredBySnab(snabId,queryState);
+                if (result != null)
+                {
+                    return new BaseResponse<IEnumerable<QueryDetail>>()
+                    {
+                        Data = result,
+                        StatusCode = Domain.Enum.StatusCode.OK
+                    };
+                }
+                return new BaseResponse<IEnumerable<QueryDetail>>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = "Not found query"
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<IEnumerable<QueryDetail>>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = ex.Message
+                };
+            }
+        }
+
+        public async Task<BaseResponse<IEnumerable<QueryDetail>>> GetDeliveredOrRefuted()
+        {
+            try
+            {
+
+                var result = await queryDetailsRepository.GetDeliveredOrRefuted();
                 if (result != null)
                 {
                     return new BaseResponse<IEnumerable<QueryDetail>>()

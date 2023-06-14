@@ -10,6 +10,7 @@ namespace Building.DAL.Interfaces
         IEnumerable<Query> GetDeliveredBySnab(int id);
         IEnumerable<Query> GetNoAgreement();
         IEnumerable<Query> GetMPZ(int id);
+        IEnumerable<Query> GetMPZbySiteId(int siteId);
 
 
 

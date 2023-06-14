@@ -10,6 +10,5 @@
         public string Comment { get; set; }
         public string Image { get; set; }
         public string UrlToCompany { get; set; }
-        public string Phone { get; set; }
     }
 }

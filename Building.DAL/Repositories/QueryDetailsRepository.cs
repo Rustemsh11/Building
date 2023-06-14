@@ -66,6 +66,15 @@ namespace Building.DAL.Repositories
                 .Include(c => c.Material).ThenInclude(c => c.Catalog)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<QueryDetail>> GetDeliveredBySiteID(int siteId,string queryState)
+        {
+            return await buildingContext.QueryDetails.Where(c => c.Query.SiteId == siteId && c.State == queryState)
+                .Include(c => c.Query).ThenInclude(c => c.Prorab)
+                .Include(c => c.Query).ThenInclude(c => c.Site)
+                .Include(c=>c.Query).ThenInclude(c=>c.Snab)
+                .Include(c => c.Material).ThenInclude(c => c.Catalog)
+                .ToListAsync();
+        }
 
         /// <summary>
         /// Get one detail(concrete name,id...) of query
@@ -109,6 +118,32 @@ namespace Building.DAL.Repositories
             return await buildingContext.QueryDetails.FirstOrDefaultAsync(c => c.ID == queryDetailId);
         }
 
+        public async Task<IEnumerable<QueryDetail>> GetAllMPZ()
+        {
+            return await buildingContext.QueryDetails.Where(c => c.State == "Подтверждено")
+               .Include(c => c.Query).ThenInclude(c => c.Prorab)
+               .Include(c => c.Query).ThenInclude(c => c.Site)
+               .Include(c => c.Query).ThenInclude(c => c.Snab)
+               .Include(c => c.Material).ThenInclude(c => c.Catalog)
+               .ToListAsync();
+        }
 
+        public async Task<IEnumerable<QueryDetail>> GetDeliveredOrRefuted()
+        {
+            return await buildingContext.QueryDetails.Where(c=>c.State == "Заявка доставлена" || c.State == "Опровергнут")
+                .Include(c => c.Query).ThenInclude(c => c.Prorab)
+                .Include(c => c.Query).ThenInclude(c => c.Site)
+                .Include(c => c.Query).ThenInclude(c => c.Snab)
+                .Include(c => c.Material).ThenInclude(c => c.Catalog)
+                .ToListAsync();
+        }
+
+        //public Task<IEnumerable<QueryDetail>> GetMPZBySiteID(int id)
+        //{
+        //    return buildingContext.QueryDetails.Where(c => c.Query.SiteId == id && c.State == "Подтверждено")
+        //        .Include(c => c.Query).ThenInclude(c=>c.Snab)
+        //        .Include(c => c.)
+        //        .Include(c => c.Prorab).ToList();
+        //}
     }
 }

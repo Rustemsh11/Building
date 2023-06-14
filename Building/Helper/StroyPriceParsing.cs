@@ -121,7 +121,6 @@ namespace Building.Helper
                     Comment = s,
                     Image = item.QuerySelector("div.companies-item__open-wrp>.companies-item__open-l>.gallery-compact>.gallery-compact__wrp>a").GetAttribute("href"),
                     UrlToCompany = "https://stroyprice.ru/" + item.QuerySelector("div.companies-item__open-wrp>.companies-item__open-c>.companies-item__open-line>a").GetAttribute("href"),
-                    //Phone=item.QuerySelector("div.modal-container>.modal-container__wrp>.modal-container__cell>.modal.modal_size_middle.modal-form.phone-call__modal>.modal__content.modal-form__content>.modal-form__wrp>.modal-form__form-side>.modal-form__form>.phone-call__phone-desc>a>span>.phone-call__phone-number").TextContent
                 });
             }
 

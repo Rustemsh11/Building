@@ -374,5 +374,36 @@ namespace Building.BLL.Services.Implementations
                 };
             }
         }
+
+        public BaseResponse<IEnumerable<Query>> GetMPZBySiteId(int siteId)
+        {
+            try
+            {
+
+                var result = repository.GetMPZbySiteId(siteId);
+                if (result != null)
+                {
+                    return new BaseResponse<IEnumerable<Query>>()
+                    {
+                        Data = result,
+                        StatusCode = Domain.Enum.StatusCode.OK
+                    };
+                }
+                return new BaseResponse<IEnumerable<Query>>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = "Not found query"
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<IEnumerable<Query>>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = ex.Message
+                };
+            }
+        }
     }
 }

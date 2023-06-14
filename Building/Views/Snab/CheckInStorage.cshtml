@@ -1,0 +1,39 @@
+﻿@using Building.Domain.ViewModel;
+@model IEnumerable<MaterialsFrom1C>
+
+<style>
+
+    #closeButton {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+</style>
+
+<div class="modal-content bg-primary bg-opacity-75 text-white rounded">
+    <div class="modal-header border-0 row">
+        <div class="col-12">
+            <h2 class="text-center">Данные из базы 1С</h2>
+            <button type="button" class="btn-close btn-light" data-bs-dismiss="modal" area-hidden="true" aria-label="Close" id="closeButton"></button>
+        </div>
+        <br/>
+        <br/>
+        <h3>Найдено товаров: @Model.Count()</h3>
+
+    </div>
+    <div class="modal-body row modalbody">
+
+        @foreach (var item in Model)
+        {
+            <div class="row">
+                <div class="col mx-2">
+
+                    <h4>Категория: @item.Articul</h4>
+                    <h4>Материал: @item.Name - @item.Count @item.Measure</h4>
+                    <hr/>                    
+                </div>
+            </div>
+
+        }
+    </div>
+</div>

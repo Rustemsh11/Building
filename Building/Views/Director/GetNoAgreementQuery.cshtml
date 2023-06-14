@@ -79,7 +79,7 @@
             <thead>
                 <tr>
                     <th class="text-center" scope="col"><input type="checkbox" class="form-check-input" name="allcheck" id="selectAll" /></th>
-                    <th class="text-center" scope="col">Наименование материала</th>
+                    <th class="text-center" scope="col">Наименование</th>
                     <th class="text-center" scope="col">Срок</th>
                     <th class="text-center" scope="col">Состояние</th>
                     <th class="text-center" scope="col">Прораб</th>
@@ -95,24 +95,24 @@
                     <tr class="text-center">
                         <th class="text-center pt-5"><input type="checkbox" class="form-check-input chkCheckBoxId" value="@item.QueryId" name="queryId" /></th>
                         <th class="text-center pt-5">
-                                @*@Html.ActionLink($"{@item.Material.Name}", "QueryDetails", "Prorab", new { id = item.QueryId }, new
+                                @Html.ActionLink($"{@item.Name}", "QueryDetails", "Prorab", new { id = item.QueryId }, new
                     {
                     @class = "compItem" ,
-                         Needed to link to the html of the modal
+                        @* Needed to link to the html of the modal*@
                     data_target = "#modDialog",
-                        Tells the bootstrap javascript to do its thing
+                        @* Tells the bootstrap javascript to do its thing*@
                     data_toggle = "modal"
-                    })*@
+                    })
                         </th>
                         <th class="text-center pt-5">@item.Deadline</th>
 
                         <th class="text-center pt-4">
 
-                                @if (item.State == "Заявка создана")
+                                @if (item.State == "Обработан")
                                 {
                                 <label>Завка создана</label>
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width:5%"></div>
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width:25%"></div>
                                 </div>
                                 }
                         </th>
