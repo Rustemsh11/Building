@@ -59,8 +59,9 @@ namespace Building.Controllers
             {
                 response = response.Where(x => x.QueryDetails.First().Material.Name.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList(); //search query 
             }
-
+            
             response = Sort(response, sortOrder);
+            ViewBag.NotViewedQueries = await GetCountNotViewedQueries(id, "Заявка доставлена");
 
             return View(response);
         }
@@ -311,9 +312,11 @@ namespace Building.Controllers
         {
             //var query = queryService.GetDelivered(idProrab);
             var query = await queryDetailsService.GetDelivered(idProrab, "Заявка доставлена");
+            var setViewed = await queryDetailsService.SetViewedQueryDetail(query.Data.ToList());
             //response.Where(c => c.QueryDetails.Where(c => c.State == "Заявка доставлена"));
             //var response = query.Data.Where(c => c.State == "Заявка доставлена").ToList().AsEnumerable();
             //var response = Sort(query.Data, sortOrder);
+
             return View(query.Data);
         }
 
@@ -359,6 +362,12 @@ namespace Building.Controllers
             return RedirectToAction("GetDelivered", new { idProrab = @User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value });
         }
 
+        
+        private async Task<int> GetCountNotViewedQueries(int siteId, string queryState)
+        {
+            var responce = await queryDetailsService.GetNotViewedQueriesForProrab(siteId, queryState);
+            return responce.Data;
+        }
         [HttpGet]
         public async Task<ActionResult> GetMpz(int prorabId, SortState sortOrder = SortState.DataDesc)
         {

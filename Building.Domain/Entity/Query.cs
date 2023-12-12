@@ -23,11 +23,12 @@ namespace Building.Domain.Entity
         public string? State { get; set; }
         public string? DeliveryDate { get; set; }
         public string? CreateDate { get; set; }
-
+        
 
         public virtual Employee? Prorab { get; set; }
         public virtual BuildingSite? Site { get; set; }
         public virtual Employee? Snab { get; set; }
+
         //public virtual QueryDetail? QueryDetail { get; set; }
 
 

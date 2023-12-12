@@ -18,7 +18,7 @@ namespace Building.Domain.Entity
         public string? DeliveryDate { get; set; }
         public string? Comment { get; set; }
 
-
+        public bool? IsViewed { get; set; }
         public virtual Query? Query { get; set; }
         public virtual Material? Material { get; set; }
         //public virtual Catalog? Catalog { get; set; }

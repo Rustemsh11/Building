@@ -328,5 +328,57 @@ namespace Building.BLL.Services.Implementations
                 };
             }
         }
+        public async Task<BaseResponse<int>> GetNotViewedQueriesForProrab(int prorabId, string queryState)
+        {
+            try
+            {
+                var queries = await queryDetailsRepository.GetDelivered(prorabId, queryState);
+                int count = queries.Where(c=>c.IsViewed != true).Count();
+                return new BaseResponse<int>()
+                {
+                    Data = count,
+                    StatusCode = Domain.Enum.StatusCode.OK
+                };
+
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<int>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = ex.Message
+                };
+            }
+        }
+
+        public async Task<BaseResponse<bool>> SetViewedQueryDetail(List<QueryDetail> queryDetails)
+        {
+            try
+            {
+                foreach (var item in queryDetails)
+                {
+                    item.IsViewed = true;
+                    await queryDetailsRepository.Update(item);
+                }
+                return new BaseResponse<bool>()
+                {
+                    Data = true,
+                    StatusCode = Domain.Enum.StatusCode.OK
+                };
+
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<bool>()
+                {
+                    StatusCode = Domain.Enum.StatusCode.ServerError,
+                    Description = ex.Message
+                };
+            }
+            
+           
+        }
     }
 }

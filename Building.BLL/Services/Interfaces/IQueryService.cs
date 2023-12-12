@@ -17,5 +17,6 @@ namespace Building.BLL.Services.Interfaces
         BaseResponse<IEnumerable<Query>> GetMPZ(int id);
         Task<BaseResponse<bool>> UpdateQuery(Query entity);
         BaseResponse<IEnumerable<Query>> GetMPZBySiteId(int siteId);
+        
     }
 }

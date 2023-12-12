@@ -15,5 +15,7 @@ namespace Building.BLL.Services.Interfaces
         Task<BaseResponse<IEnumerable<QueryDetail>>> GetQueryDetailsList(int queryDetailId);
         Task<BaseResponse<IEnumerable<QueryDetail>>> GetDeliveredOrRefuted();
         Task<BaseResponse<IEnumerable<QueryDetail>>> GetAllMPZ();
+        Task<BaseResponse<int>> GetNotViewedQueriesForProrab(int prorabId, string queryState);
+        Task<BaseResponse<bool>> SetViewedQueryDetail(List<QueryDetail> queryDetails);
     }
 }

@@ -404,6 +404,6 @@ namespace Building.BLL.Services.Implementations
                     Description = ex.Message
                 };
             }
-        }
+        }       
     }
 }
